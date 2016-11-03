@@ -71,8 +71,3 @@ void Money::setAmount(double a)
 {
 	amount = a;
 }
-
-int main()
-{
-	return 0;
-}
