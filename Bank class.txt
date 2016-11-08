@@ -1,0 +1,32 @@
+Attributes:
+Vector of Patrons
+Vector of Transactions
+Money object for the banks money
+Methods:
+getTotalMoney():
+No arguements. For every Patron, loops through the patron vector, grabing 
+all the money values and adding them all into a sum variable,  also adding
+the lone money object's value. Return sum when done.
+Constructor:
+No arguements, ask for a file, and if file does not exist or entry is blank,
+create a bank object with a money value of 6000 USD. Else, the Bank should
+initialize through the file. Next, the bank should excute menu().
+menu():
+Most of this function will be a switch statement encased in a while loop, with
+the exit option exiting the while loop. In the switch statement, the different 
+options will lead to different functions being executed, like getTotalMoney()
+and Withdrawal(). After the while loop, the user is asked if they want to save
+the file, and if they do, promt them for a name. Then, save the file.
+Withdrawal():
+Asks for a patron ID and, if they exist, create a transaction object with the
+attributes the patron object (reference) and "Withdrawal."
+Deposit():
+Asks for a patron ID and, if they exist, create a transaction object with the
+attributes the patron object (reference) and "Deposit."
+newPatron():
+Creates a new patron object and places them in the vector, first checking if
+their name is already in the bank.
+getTransactions():
+Loops through the transaction vector, displaying all of them.
+getPatrons():
+Loops through the patrons vector, displaying all of them.
