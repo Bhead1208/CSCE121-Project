@@ -17,10 +17,35 @@ class Bank()
 	Bank();
 };
 
-Bank::getTransactions()
+void Bank::getTransactions()
 {
 	for (Transaction t : trans)
 	{
 		//display
+	}
+}
+
+double Bank::getTotalMoney()
+{
+	double sum = 0;
+	for(Patron p : pats)
+	{
+		sum += p.getAmount();
+	}
+}
+
+Bank::Bank()
+{
+	cout << "Input file name: ";
+	string name;
+	cin >> name;
+	ifstream file(name);
+	if (file.good())
+	{
+		//read file	
+	}
+	else
+	{
+		cash.setAmount(6000);
 	}
 }
