@@ -4,19 +4,11 @@ include "std_lib_facilities_4.h"
 
 struct Currency{
 public:
-    Currency(string type,double rate)
-        :currency_type(type),exchange_rate(rate)
-    {}
+    Currency(string type,double rate);
     
-    string getCurrency_type()
-    {
-        return currency_type;
-    }
+    string getCurrency_type();
     
-    double getexchange_rate()
-    {
-        return exchange_rate;
-    }
+    double getexchange_rate();
     
 private:
     string currency_type;
@@ -24,7 +16,6 @@ private:
 };
 
 class Patron{
-	
 	string patronName;
 	double money;
 	int idNum;
@@ -39,40 +30,22 @@ class Patron{
 	double get_Money();
 	void set_Money(double mon);
 	int get_idNum();
-	
 };
 
 struct Transaction{
 public:
     
-    Transaction(Patron::Patron cust,Chrono::Date date,Chrono::Time time,string type,double amount)
-    :customer(cust),transaction_date(date),transaction_time(time),transaction_type(type),transaction_amount(amount)
-    {}
+    Transaction(Patron::Patron cust,Chrono::Date date,Chrono::Time time,string type,double amount);
     
-    Patron::Patron getcustomer()
-    {
-        return customer;
-    }
+    Patron::Patron getcustomer();
     
-    Chrono::Date gettransaction_date()
-    {
-        return transaction_date;
-    }
+    Chrono::Date gettransaction_date();
     
-    Chrono::Time gettransaction_time()
-    {
-        return transaction_time;
-    }
+    Chrono::Time gettransaction_time();
     
-    string gettransaction_type()
-    {
-        return transaction_type;
-    }
+    string gettransaction_type();
     
-    double gettransaction_amount()
-    {
-        return transaction_amount;
-    }
+    double gettransaction_amount();
     
     
 private:
