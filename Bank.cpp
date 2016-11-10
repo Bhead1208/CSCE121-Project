@@ -23,10 +23,9 @@ class Bank()
 	@param vactor of integers
 	@return void returns nothing
 */
-void Bank::Deposit(vectro<int> vec){
+void Bank::Deposit(Patron namePatron, vector<int> vec){
 	int num;
-	bool valid;
-	
+	bool valid;	
 	cout<<"Enter Id"<<endl;
 	cin>>num;
 	
@@ -55,7 +54,12 @@ void Bank::Deposit(vectro<int> vec){
 		cout<<"Enter Year"<<endl;
 		cin>> int yy;// stores second
 		Date dateObj(yy,Date::Month(mm),dd); // might have built object incorrectly come back and check
-		Transaction transObj();
+		cout<<"Enter Currency Type"<<endl;
+		cin>> string strCurrency;
+		cout<<"Enter Amount"<<endl;
+		cin>> double amountMon;
+			
+		Transaction transObj(namePatron,dateObj,timeObj,strCurrency,amountMon);
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
