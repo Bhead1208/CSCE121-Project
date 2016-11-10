@@ -2,7 +2,7 @@
 #include "Chrono.h";
 #include "Economy.h"
 
-Currency:Currency(string type,double rate)
+Currency::Currency(string type,double rate)
     :currency_type(type),exchange_rate(rate)
 {}
 
