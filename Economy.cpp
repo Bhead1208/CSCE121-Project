@@ -275,23 +275,28 @@ void Bank::save()
 	
 }
 
-void newPatron(){
+void Bank::newPatron()
+{
 	string strFirst;
 	string strLast;
 	cout<< "Enter First Name"<<endl;
-	cin>> strFirst;
-	cout<< "Enter Last Name"<<endl;
-	cin<< strLast;
+	cin >> strFirst;
+	cout << "Enter Last Name"<<endl;
+	cin >> strLast;
 	
-	Paron newPat(strFirst,strLast);
+	Patron newPat(strFirst,strLast);
 	
 	bool pass = true;
 	while(pass)
 	for(int i = 0; i < pats.size(); i++){
-		if(pats[i].get_idNum() == num){
-			change_id();
+		if(pats[i].get_idNum() == newPat.get_idNum()){
+			change_Id();
 		}
-		else pass= false break;
+		else 
+		{
+			pass= false;
+			break;
+		}
 	}
 	
 	pats.push_back(newPat);
@@ -329,17 +334,22 @@ void Bank::menu()
 
 ostream& operator<<(ostream& os, Patron& p)
 {
-	return os << p.get_Name() << " " << p.get_idNum() << " " << p.get_Money() << endl;
+	return os << p.get_Name() << " " << p.get_idNum() << " " << p.get_Money();
 }
 
 ostream& operator<<(ostream& os, Transaction& t)
 {
-	return os << t.getcustomer().get_Name() << " " << t.gettransaction_date() << " " << t.gettransaction_time() << " " << t.gettransaction_type() << " " <<  t.gettransaction_amount() << endl;
+	return os << t.getcustomer().get_Name() << " " << t.gettransaction_date() << " " << t.gettransaction_time() << " " << t.gettransaction_type() << " " <<  t.gettransaction_amount();
 }
 
 //--------------------
 
 int main()
 {
-	
+	Patron p("John", "Memer");
+	cout << p << endl;
+	Chrono::Date d;
+	Chrono::Time now;
+	Transaction t(p,d,now,"Withdrawal",2);
+	cout << t;
 }
