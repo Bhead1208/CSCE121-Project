@@ -274,10 +274,32 @@ void Bank::save()
 {
 	
 }
-
-void Bank::newPatron()
-{
+/*
+	Function newPatron
+	Creates Patron Object checks if id is unique
+	@param1 string
+	@param2 string
+*/
+void newPatron(){
+	string strFirst;
+	string strLast;
+	cout<< "Enter First Name"<<endl;
+	cin>> strFirst;
+	cout<< "Enter Last Name"<<endl;
+	cin<< strLast;
 	
+	Paron newPat(strFirst,strLast);
+	
+	bool pass = true;
+	while(pass)
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			newPat.change_id();
+		}
+		else pass= false break;
+	}
+	
+	pats.push_back(newPat);
 }
 
 void Bank::menu()
