@@ -87,3 +87,5 @@ class Bank
 
 ostream& operator<<(ostream&, Patron&);
 ostream& operator<<(ostream&, Transaction&);
+istream& operator>>(istream& is, Patron& p);
+istream& operator>>(istream& is, Transaction& t);
