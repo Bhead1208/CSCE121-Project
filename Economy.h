@@ -76,10 +76,14 @@ class Bank
 	void withdrawal();
 	void deposit();
 	void newPatron();
-	void getTransactions() const;
-	void getPatrons() const;
+	void get_Transactions();
+	void get_Patrons();
+	void save();
 	
 	public:
 	void menu();
 	Bank();
 };
+
+ostream& operator<<(ostream, Patron);
+ostream& operator<<(ostream, Transaction);

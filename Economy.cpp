@@ -115,14 +115,6 @@ Money::Money()
 
 //--------------------
 
-void Bank::getTransactions() const
-{
-	for (Transaction t : trans)
-	{
-		//display
-	}
-}
-
 double Bank::getTotalMoney() const
 {
 	double sum = 0;
@@ -163,9 +155,11 @@ void Bank::deposit(){
 	
 	// for loop checks trough vector of id's to see if id exists
 	Patron customer;
+	int index=0;
 	for(int i = 0; i < pats.size(); i++){
 		if(pats[i].get_idNum() == num){
 			valid = true;
+			index=i;
 			customer = pats[i];
 			break;
 		}
@@ -189,17 +183,133 @@ void Bank::deposit(){
 		cout<<"Enter Year"<<endl;
 		cin>> yy;// stores second
 		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
-		cout<<"Enter Currency Type"<<endl;
+		/* cout<<"Enter Currency Type"<<endl;
 		string strCurrency;
-		cin>> strCurrency;
+		cin>> strCurrency; */
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
 			
-		Transaction transObj(customer ,dateObj,timeObj,strCurrency,amountMon);
+		Transaction transObj(customer ,dateObj,timeObj,"Deposit",amountMon);
+		trans.push_back(transObj);
+		
+		pats.at(index).set_Money(pats.at(index).get_Money()+amountMon);
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
+
+void Bank::withdrawal(){
+	int num;
+	bool valid;	
+	cout<<"Enter Id"<<endl;
+	cin>>num;
+	
+	// for loop checks trough vector of id's to see if id exists
+	Patron customer;
+	int index;
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			valid = true;
+			customer = pats[i];
+			index = i;
+			break;
+		}
+	}
+	if(valid){
+		int hou, min, sec, dd, mm, yy;
+		// getting data from user to create time object
+		cout<<"Enter Time"<<endl;
+		cout<<"Enter Hour"<<endl; 
+		cin>> hou; // stroes hour
+		cout<<"Enter Minute"<<endl;
+		cin>> min;// stores minute
+		cout<<"Enter Second"<<endl;
+		cin>> sec;// stores second
+		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		cout<<"Enter Date"<<endl;
+		cout<<"Enter Day"<<endl; 
+		cin>> dd; // stroes hour
+		cout<<"Enter Month"<<endl;
+		cin>> mm;// stores minute
+		cout<<"Enter Year"<<endl;
+		cin>> yy;// stores second
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+		/* cout<<"Enter Transaction Type"<<endl;
+		string strType;
+		cin>> strType; */
+		cout<<"Enter Amount"<<endl;
+		double amountMon;
+		cin>> amountMon;
+		
+		if (pats.at(index).get_Money()>=amountMon)
+		{
+			Transaction transObj(customer ,dateObj,timeObj,"Withdrawal",amountMon);
+			trans.push_back(transObj);
+			
+			pats.at(index).set_Money(pats.at(index).get_Money()-amountMon);
+		}
+		else
+		{
+			cout << "Overdraw Error" << endl;
+		}
+	}
+	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
+}
+
+void Bank::get_Transactions()
+{
+    for (int i=0; i<trans.size();i++){
+        //cout << trans[i] << endl;
+    }
+}
+
+void Bank::get_Patrons()
+{
+    for (int i=0; i<pats.size();i++){
+        //cout << pats[i] << endl;
+    }
+}
+
+void Bank::save()
+{
+	
+}
+
+void Bank::newPatron()
+{
+	
+}
+
+void Bank::menu()
+{
+	bool stop = false;
+	while (!stop)
+	{
+		cout << "Enter an option: ";
+		int option;
+		cin >> option;
+		switch(option)
+		{
+			case 1: withdrawal(); break;
+			case 2: deposit(); break;
+			case 3: newPatron(); break;
+			case 4: get_Transactions(); break;
+			case 5: get_Patrons(); break;
+			case 6: stop = true; break;
+			default: cout << "wut\n";
+		}
+	}
+	cout << "Would you like to save? y/n: ";
+	char c;
+	cin >> c;
+	if (c=='Y')
+	{
+		save();
+	}
+}
+
+//--------------------
+
 
 //--------------------
 
