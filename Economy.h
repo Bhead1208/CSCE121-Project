@@ -23,6 +23,7 @@ class Patron{
 	
 	Patron();
 	Patron(string first, string second);
+	Patron(string name,int idd,int num);
 	
 	string get_Name();
 	void set_Name(string str);
