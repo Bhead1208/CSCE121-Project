@@ -50,7 +50,7 @@ void Bank::Deposit(Patron namePatron, vector<int> vec){
 		cout<<"Enter Day"<<endl; 
 		cin>> int dd; // stroes hour
 		cout<<"Enter Month"<<endl;
-		cin>> int mm;// stores minute
+		cin>> int mm;// stores minuterans
 		cout<<"Enter Year"<<endl;
 		cin>> int yy;// stores second
 		Date dateObj(yy,Date::Month(mm),dd); // might have built object incorrectly come back and check
@@ -81,17 +81,17 @@ double Bank::getTotalMoney()
 	}
 }
 
-void get_Transaction(Transaction t)
+void get_Transaction()
 {
-    for (int i=0; i<t.size();i++){
-        cout << t[i] << endl;
+    for (int i=0; i<trans.size();i++){
+        cout << trans[i] << endl;
     }
 }
 
-void get_Patrons(Patron p)
+void get_Patrons()
 {
-    for (int i=0; i<p.size();i++){
-        cout << p[i] << endl;
+    for (int i=0; i<pats.size();i++){
+        cout << pats[i] << endl;
     }
 }
 
