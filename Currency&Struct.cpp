@@ -60,7 +60,10 @@ public:
     {
         return transaction_amount;
     }
-    
+    void newPatron(){
+	Paron newPat;
+	pats.push_back(newPat);
+    }
     
 private:
     Patron::Patron customer;
