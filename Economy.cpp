@@ -275,9 +275,26 @@ void Bank::save()
 	
 }
 
-void Bank::newPatron()
-{
+void newPatron(){
+	string strFirst;
+	string strLast;
+	cout<< "Enter First Name"<<endl;
+	cin>> strFirst;
+	cout<< "Enter Last Name"<<endl;
+	cin<< strLast;
 	
+	Paron newPat(strFirst,strLast);
+	
+	bool pass = true;
+	while(pass)
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			change_id();
+		}
+		else pass= false break;
+	}
+	
+	pats.push_back(newPat);
 }
 
 void Bank::menu()
