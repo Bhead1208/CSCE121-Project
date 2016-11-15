@@ -85,5 +85,5 @@ class Bank
 	Bank();
 };
 
-ostream& operator<<(ostream, Patron);
-ostream& operator<<(ostream, Transaction);
+ostream& operator<<(ostream&, Patron&);
+ostream& operator<<(ostream&, Transaction&);
