@@ -1,18 +1,17 @@
-
-include "Chrono.h"
-include "std_lib_facilities_4.h"
+#include "Chrono.h"
+#include "std_lib_facilities_4.h"
 
 struct Currency{
 public:
-    Currency(string type,double rate);
+    Currency(string t,double r);
+	Currency();
     
     string getCurrency_type();
     
     double getexchange_rate();
-    
-private:
-    string currency_type;
-    double exchange_rate;
+	
+    string type;
+    double rate;
 };
 
 class Patron{
@@ -30,14 +29,15 @@ class Patron{
 	double get_Money();
 	void set_Money(double mon);
 	int get_idNum();
+	void set_idNum(int num);
+	void change_Id();
 };
 
 struct Transaction{
-public:
     
-    Transaction(Patron::Patron cust,Chrono::Date date,Chrono::Time time,string type,double amount);
+    Transaction(Patron, Chrono::Date, Chrono::Time, string, double);
     
-    Patron::Patron getcustomer();
+    Patron getcustomer();
     
     Chrono::Date gettransaction_date();
     
@@ -47,9 +47,7 @@ public:
     
     double gettransaction_amount();
     
-    
-private:
-    Patron::Patron customer;
+    Patron customer;
     Chrono::Date transaction_date;
     Chrono::Time transaction_time;
     string transaction_type;
@@ -66,12 +64,13 @@ class Money
 	void setCurrency(string);
 	double getAmount();
 	void setAmount(double);
+	Money();
 };
 
-class Bank()
+class Bank
 {
 	Vector<Patron> pats;
-	Vector<Tranction> trans;
+	Vector<Transaction> trans;
 	Money cash;
 	double getTotalMoney() const;
 	void withdrawal();

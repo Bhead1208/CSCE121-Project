@@ -1,35 +1,37 @@
-#include "std_lib_facilities_4.h";
-#include "Chrono.h";
+#include "std_lib_facilities_4.h"
 #include "Economy.h"
 
-Currency::Currency(string type,double rate)
-    :currency_type(type),exchange_rate(rate)
+Currency::Currency(string t,double r)
+    :type(type),rate(rate)
+{}
+
+Currency::Currency()
 {}
 
 string Currency::getCurrency_type()
 {
-    return currency_type;
+    return type;
 }
 
 double Currency::getexchange_rate()
 {
-    return exchange_rate;
+    return rate;
 }
 
 //--------------------
 
 Patron::Patron(){
-	patronName = "Jhon"+"-"+"Doe";
+	patronName = "John-Doe";
 	money = 0;
-	idNum = 000000000;
+	idNum = rand() % 1000000 + 1;
 }
 Patron::Patron(string first, string second){
-	patronName = first +"-"+ second;
+	patronName = first +"_"+ second;
 	money = 0;
-	idNum = 000000000;
+	idNum = rand() % 1000000 + 1;
 }
-void Patron::get_Name(){
-	return PatronName;
+string Patron::get_Name(){
+	return patronName;
 }
 void Patron::set_Name(string str){
 	patronName = str;
@@ -41,39 +43,43 @@ void Patron::set_Money(double mon){
 	money = mon;
 }
 int Patron::get_idNum(){
-	return id; 
+	return idNum; 
 }
-int Patron::set_idNum(num){
+void Patron::set_idNum(int num){
 	idNum = num;
+}
+void Patron::change_Id()
+{
+	idNum = rand() % 1000000 + 1;
 }
 
 //--------------------
 
-Transaction(Patron::Patron cust,Chrono::Date date,Chrono::Time time,string type,double amount)
-:customer(cust),transaction_date(date),transaction_time(time),transaction_type(type),transaction_amount(amount)
+Transaction::Transaction(Patron cust, Chrono::Date d, Chrono::Time t, string type, double amount)
+:customer(cust),transaction_date(d),transaction_time(t),transaction_type(type),transaction_amount(amount)
 {}
 
-Patron::Patron getcustomer()
+Patron Transaction::getcustomer()
 {
     return customer;
 }
 
-Chrono::Date gettransaction_date()
+Chrono::Date Transaction::gettransaction_date()
 {
     return transaction_date;
 }
 
-Chrono::Time gettransaction_time()
+Chrono::Time Transaction::gettransaction_time()
 {
     return transaction_time;
 }
 
-string gettransaction_type()
+string Transaction::gettransaction_type()
 {
     return transaction_type;
 }
 
-double gettransaction_amount()
+double Transaction::gettransaction_amount()
 {
     return transaction_amount;
 }
@@ -87,7 +93,7 @@ Currency Money::getCurrency()
 
 void Money::setCurrency(string t)
 {
-	cur.setType("USD");
+	cur.type = "USD";
 }
 
 double Money::getAmount()
@@ -100,9 +106,16 @@ void Money::setAmount(double a)
 	amount = a;
 }
 
+Money::Money()
+{
+	amount = 6000;
+	Currency c("USD", 1.0);
+	cur = c;
+}
+
 //--------------------
 
-void Bank::getTransactions()
+void Bank::getTransactions() const
 {
 	for (Transaction t : trans)
 	{
@@ -110,12 +123,12 @@ void Bank::getTransactions()
 	}
 }
 
-double Bank::getTotalMoney()
+double Bank::getTotalMoney() const
 {
 	double sum = 0;
 	for(Patron p : pats)
 	{
-		sum += p.getAmount();
+		sum += p.get_Money();
 	}
 }
 
@@ -133,4 +146,64 @@ Bank::Bank()
 	{
 		cash.setAmount(6000);
 	}
+}
+
+/*
+	Function Deposit 
+	Asks for a patron ID and, if they exist, create a transaction object with the
+	attributes the patron object (reference) and "Deposit."
+	@param vactor of integers
+	@return void returns nothing
+*/
+void Bank::deposit(){
+	int num;
+	bool valid;	
+	cout<<"Enter Id"<<endl;
+	cin>>num;
+	
+	// for loop checks trough vector of id's to see if id exists
+	Patron customer;
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			valid = true;
+			customer = pats[i];
+			break;
+		}
+	}
+	if(valid){
+		int hou, min, sec, dd, mm, yy;
+		// getting data from user to create time object
+		cout<<"Enter Time"<<endl;
+		cout<<"Enter Hour"<<endl; 
+		cin>> hou; // stroes hour
+		cout<<"Enter Minute"<<endl;
+		cin>> min;// stores minute
+		cout<<"Enter Second"<<endl;
+		cin>> sec;// stores second
+		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		cout<<"Enter Date"<<endl;
+		cout<<"Enter Day"<<endl; 
+		cin>> dd; // stroes hour
+		cout<<"Enter Month"<<endl;
+		cin>> mm;// stores minute
+		cout<<"Enter Year"<<endl;
+		cin>> yy;// stores second
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+		cout<<"Enter Currency Type"<<endl;
+		string strCurrency;
+		cin>> strCurrency;
+		cout<<"Enter Amount"<<endl;
+		double amountMon;
+		cin>> amountMon;
+			
+		Transaction transObj(customer ,dateObj,timeObj,strCurrency,amountMon);
+	}
+	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
+}
+
+//--------------------
+
+int main()
+{
+	
 }
