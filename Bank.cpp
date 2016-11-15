@@ -81,6 +81,20 @@ double Bank::getTotalMoney()
 	}
 }
 
+void get_Transaction(Transaction t)
+{
+    for (int i=0; i<t.size();i++){
+        cout << t[i] << endl;
+    }
+}
+
+void get_Patrons(Patron p)
+{
+    for (int i=0; i<p.size();i++){
+        cout << p[i] << endl;
+    }
+}
+
 Bank::Bank()
 {
 	cout << "Input file name: ";
@@ -96,3 +110,4 @@ Bank::Bank()
 		cash.setAmount(6000);
 	}
 }
+
