@@ -30,6 +30,11 @@ Patron::Patron(string first, string second){
 	money = 0;
 	idNum = rand() % 1000000 + 1;
 }
+Patron::Patron(string name,int idd,int num){
+    Patron::set_Name(name);
+    Patron::set_idNum(idd);
+    Patron::set_Money(num);
+}
 string Patron::get_Name(){
 	return patronName;
 }
