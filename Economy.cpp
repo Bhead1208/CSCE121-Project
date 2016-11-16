@@ -1,9 +1,9 @@
 #include "std_lib_facilities_4.h"
 #include "Economy.h"
 
-Currency::Currency(string t,double r)
-    :type(type),rate(rate)
-{}
+ Currency::Currency(string t,double r)
+    :type(t),rate(r)
+{} 
 
 Currency::Currency()
 {}
@@ -112,11 +112,18 @@ void Money::setAmount(double a)
 Money::Money()
 {
 	amount = 6000;
-	Currency c("USD", 1.0);
+	string name = "USD";
+	Currency c(name, 1.0);
 	cur = c;
 }
 
 //--------------------
+
+Bank::Bank() 
+{
+	
+	
+};
 
 void Bank::read()
 {
@@ -185,6 +192,13 @@ void Bank::read()
 			Transaction tr(pats[index],da,ti,vs[3],stod(vs[4]));
 			trans.push_back(tr);
 		}
+	}
+	else{
+		cout << "no file" << endl;
+	}
+	for (Transaction x : trans)
+	{
+		cout << x << endl;
 	}
 }
 

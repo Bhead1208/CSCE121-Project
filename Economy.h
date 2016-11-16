@@ -85,7 +85,7 @@ class Bank
 	public:
 	void read();
 	void menu();
-	//Bank();
+	Bank();
 };
 
 ostream& operator<<(ostream&, Patron&);
