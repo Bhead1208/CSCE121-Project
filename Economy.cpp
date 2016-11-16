@@ -407,7 +407,42 @@ ostream& operator<<(ostream& os, Transaction& t)
 {
 	return os << t.getcustomer().get_Name() << " " << t.gettransaction_date() << " " << t.gettransaction_time() << " " << t.gettransaction_type() << " " <<  t.gettransaction_amount();
 }
+istream& operator>>(istream& is, Patron& p)
+{
+    string name;
+    int idNum;
+    double money;
+    char ch1, ch2, ch3, ch4;
+    is >> name >> ch2 >> idNum >> ch3 >> money >>;
+    if (!is) return is;
+    if (ch1!=' ' || ch2!=' ' || ch3!=' ') { // oops: format error
+        is.clear(ios_base::failbit);
+        
+        return is;
+    }
+    p = Patron(name,idNUm,money);
+    return is;
+   
+}
 
+istream& operator>>(istream& is, Transaction& t)
+{
+    string name;
+    Chrono::Date d;
+    Chrono::Time tt;
+    string type;
+    double amount;
+    char ch1, ch2, ch3, ch4;
+    is >> name >> ch1 >> d >> ch2 >> tt >> ch3 >> type >> ch4>> amount;
+    if (!is) return is;
+    if (ch1!=' ' || ch2!=' ' || ch3!=' ' || ch4!=' ') { // oops: format error
+        is.clear(ios_base::failbit);                    // set the fail bit
+        return is;
+    }
+    t = Transaction(name,d,tt,type,amount);
+    return is;
+    
+}
 //--------------------
 
 int main()
