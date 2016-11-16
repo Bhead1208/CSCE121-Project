@@ -57,7 +57,22 @@ void Patron::change_Id()
 {
 	idNum = rand() % 1000000 + 1;
 }
+void savefile(string str){
+	ofstream outfile;
+	outfile.open(str);
+		outfile<< cash.getCurrency().type<<end;
+		outfile<< pats.size();
+	for(int = 0; i<pats.size(); i++){
+		outfile<<pats[i]<<endl;
+	}
+	outfile<< trans.size()<<end;
+	for(int = 0; i<trans.size(); i++){
+		outfile<<trans[i]<<endl;
+	}
+	
+}
 
+	
 //--------------------
 
 Transaction::Transaction(Patron cust, Chrono::Date d, Chrono::Time t, string type, double amount)
