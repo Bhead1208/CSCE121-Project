@@ -30,11 +30,9 @@ Patron::Patron(string first, string second){
 	money = 0;
 	idNum = rand() % 1000000 + 1;
 }
-Patron::Patron(string name,int idd,int num){
-    Patron::set_Name(name);
-    Patron::set_idNum(idd);
-    Patron::set_Money(num);
-}
+Patron::Patron(string n, int d, int m)
+: patronName(n),money(m),idNum(d)
+{}
 string Patron::get_Name(){
 	return patronName;
 }
@@ -57,22 +55,7 @@ void Patron::change_Id()
 {
 	idNum = rand() % 1000000 + 1;
 }
-void savefile(string str){
-	ofstream outfile;
-	outfile.open(str);
-		outfile<< cash.getCurrency().type<<end;
-		outfile<< pats.size();
-	for(int = 0; i<pats.size(); i++){
-		outfile<<pats[i]<<endl;
-	}
-	outfile<< trans.size()<<end;
-	for(int = 0; i<trans.size(); i++){
-		outfile<<trans[i]<<endl;
-	}
-	
-}
 
-	
 //--------------------
 
 Transaction::Transaction(Patron cust, Chrono::Date d, Chrono::Time t, string type, double amount)
@@ -135,28 +118,82 @@ Money::Money()
 
 //--------------------
 
-double Bank::getTotalMoney() const
+void Bank::read()
+{
+	pats.reserve(100);
+	trans.reserve(100);
+	cout << "File name?: ";
+	string fname;
+	cin >> fname;
+	ifstream file(fname);
+	if (file.good())
+	{
+		string s;
+		getline(file,s);
+		cash.getCurrency().type = s;
+		int numPats;
+		getline(file,s);
+		numPats = stoi(s);
+		for (int i = 0; i < numPats; i++)
+		{
+			string patLine;
+			getline(file,patLine);
+			Vector<string> vs;
+			stringstream ss;
+			ss.str(patLine);
+			string item;
+			while (getline(ss, item, ' '))
+			{
+				vs.push_back(item);
+			}
+			Patron p(vs[0],stoi(vs[1]),stoi(vs[2]));
+			pats.push_back(p);
+		}
+		int numTrans;
+		getline(file,s);
+		numTrans = stoi(s);
+		for (int i = 0; i < numTrans; i++)
+		{
+			string tLine;
+			getline(file,tLine);
+			Vector<string> vs;
+			stringstream ss;
+			ss.str(tLine);
+			string item;
+			while (getline(ss, item, ' '))
+			{
+				vs.push_back(item);
+			}
+			//Read values from vector into trans object
+			//name date time type amount
+			ss.str("");
+			ss << vs[1];
+			Chrono::Date da;
+			ss >> da;
+			ss.str("");
+			ss << vs[2];
+			Chrono::Time ti;
+			ss >> ti;
+			//search patron array
+			int index;
+			for(int i = 0; i < pats.size(); i++){
+				if(pats[i].get_Name() == vs[0]){
+					index = i;
+					break;
+				}
+			}
+			Transaction tr(pats[index],da,ti,vs[3],stod(vs[4]));
+			trans.push_back(tr);
+		}
+	}
+}
+
+double Bank::getTotalMoney()
 {
 	double sum = 0;
 	for(Patron p : pats)
 	{
 		sum += p.get_Money();
-	}
-}
-
-Bank::Bank()
-{
-	cout << "Input file name: ";
-	string name;
-	cin >> name;
-	ifstream file(name);
-	if (file.good())
-	{
-		//read file	
-	}
-	else
-	{
-		cash.setAmount(6000);
 	}
 }
 
@@ -203,9 +240,6 @@ void Bank::deposit(){
 		cout<<"Enter Year"<<endl;
 		cin>> yy;// stores second
 		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
-		/* cout<<"Enter Currency Type"<<endl;
-		string strCurrency;
-		cin>> strCurrency; */
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
@@ -254,9 +288,7 @@ void Bank::withdrawal(){
 		cout<<"Enter Year"<<endl;
 		cin>> yy;// stores second
 		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
-		/* cout<<"Enter Transaction Type"<<endl;
-		string strType;
-		cin>> strType; */
+	     
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
@@ -290,7 +322,7 @@ void Bank::get_Patrons()
     }
 }
 
-void Bank::save()
+void Bank::save_file()
 {
 	
 }
@@ -310,7 +342,7 @@ void Bank::newPatron()
 	while(pass)
 	for(int i = 0; i < pats.size(); i++){
 		if(pats[i].get_idNum() == newPat.get_idNum()){
-			change_Id();
+			newPat.change_Id();
 		}
 		else 
 		{
@@ -346,7 +378,7 @@ void Bank::menu()
 	cin >> c;
 	if (c=='Y')
 	{
-		save();
+		save_file();
 	}
 }
 
@@ -354,8 +386,7 @@ void Bank::menu()
 
 ostream& operator<<(ostream& os, Patron& p)
 {
-	return os << p.get_Name() << " " << p.get_idNum() << " " << p.get_
-		();
+	return os << p.get_Name() << " " << p.get_idNum() << " " << p.get_Money();
 }
 
 ostream& operator<<(ostream& os, Transaction& t)
@@ -363,50 +394,15 @@ ostream& operator<<(ostream& os, Transaction& t)
 	return os << t.getcustomer().get_Name() << " " << t.gettransaction_date() << " " << t.gettransaction_time() << " " << t.gettransaction_type() << " " <<  t.gettransaction_amount();
 }
 
-istream& operator>>(istream& is, Patron& p)
-{
-    string name;
-    int idNum;
-    double money;
-    char ch1, ch2, ch3, ch4;
-    is >> name >> ch2 >> idNum >> ch3 >> money >>;
-    if (!is) return is;
-    if (ch1!=' ' || ch2!=' ' || ch3!=' ') { // oops: format error
-        is.clear(ios_base::failbit);
-        
-        return is;
-    }
-    p = Patron(name,idNUm,money);
-    return is;
-   
-}
-
-istream& operator>>(istream& is, Transaction& t)
-{
-    string name;
-    Chrono::Date d;
-    Chrono::Time tt;
-    string type;
-    double amount;
-    char ch1, ch2, ch3, ch4;
-    is >> name >> ch1 >> d >> ch2 >> tt >> ch3 >> type >> ch4>> amount;
-    if (!is) return is;
-    if (ch1!=' ' || ch2!=' ' || ch3!=' ' || ch4!=' ') { // oops: format error
-        is.clear(ios_base::failbit);                    // set the fail bit
-        return is;
-    }
-    t = Transaction(name,d,tt,type,amount);
-    return is;
-    
-}
 //--------------------
 
 int main()
 {
-	Patron p("John", "Memer");
-	cout << p << endl;
+	cout << "hi";
+	Patron p("h",1,1);
 	Chrono::Date d;
 	Chrono::Time now;
-	Transaction t(p,d,now,"Withdrawal",2);
-	cout << t;
+	Transaction tr(p,d,now,"Deposit",11);
+	cout << "hi";
+	Bank meme;
 }

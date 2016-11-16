@@ -23,7 +23,7 @@ class Patron{
 	
 	Patron();
 	Patron(string first, string second);
-	Patron(string name,int idd,int num);
+	Patron(string n, int d, int m);
 	
 	string get_Name();
 	void set_Name(string str);
@@ -73,20 +73,20 @@ class Bank
 	Vector<Patron> pats;
 	Vector<Transaction> trans;
 	Money cash;
-	double getTotalMoney() const;
+	double getTotalMoney();
 	void withdrawal();
 	void deposit();
 	void newPatron();
 	void get_Transactions();
 	void get_Patrons();
-	void save();
+	void save_file();
+	
 	
 	public:
+	void read();
 	void menu();
-	Bank();
+	//Bank();
 };
 
 ostream& operator<<(ostream&, Patron&);
 ostream& operator<<(ostream&, Transaction&);
-istream& operator>>(istream&, Patron&);
-istream& operator>>(istream&, Transaction&);
