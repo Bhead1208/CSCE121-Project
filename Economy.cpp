@@ -523,13 +523,18 @@ double get_rate(string s, string r)
 	
 	return num/den;
 }
-void BankIntl::withdrawal()
-{
-	
+void Bankint1::withDrawl(){
+	cout<< "What Currency Would You Like to With Draw"<<endl;
+	string str;
+	cin >> str;
+	get_rate(str,cash.getCurrency().type);
 }
-void BankIntl::deposit()
-{
-	
+
+void Bankint1::deposit(){
+	cout<< "What Currency Would You Like to With Draw"<<endl;
+	string str;
+	cin >> str;
+	double val = get_rate(str,cash.getCurrency().type);
 }
 void BankIntl::save_file()
 {
