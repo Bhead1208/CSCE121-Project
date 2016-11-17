@@ -121,7 +121,9 @@ Money::Money()
 
 Bank::Bank() 
 {
-	
+	cash.setAmount(6000.0);
+	cash.getCurrency().type = "USD";
+	read();
 };
 
 void Bank::read()
@@ -137,6 +139,8 @@ void Bank::read()
 		string s;
 		getline(file,s);
 		cash.getCurrency().type = s;
+		getline(file,s);
+		cash.setAmount(stod(s));
 		int numPats;
 		getline(file,s);
 		numPats = stoi(s);
@@ -175,12 +179,10 @@ void Bank::read()
 			istringstream istr(vs[1]);
 			Chrono::Date da;
 			istr >> da;
-			cout << da;
 			
 			Chrono::Time ti;
 			istr.str(vs[2]);
 			istr >> ti;
-			cout << ti << endl;
 			
 			//search patron array
 			int index;
@@ -194,16 +196,18 @@ void Bank::read()
 			trans.push_back(tr);
 		}
 	}
-	else{
+	else
+	{
 		cout << "no file" << endl;
 	}
+	cout << "Bank amount: "<< cash.getAmount() << " " << cash.getCurrency().type << endl;
 	for (Patron x : pats)
 	{
-		cout << x << endl;
+		cout << x << " " << cash.getCurrency().type << endl;
 	}
 	for (Transaction x : trans)
 	{
-		cout << x << endl;
+		cout << x << " " << cash.getCurrency().type << endl;
 	}
 }
 
@@ -214,6 +218,8 @@ double Bank::getTotalMoney()
 	{
 		sum += p.get_Money();
 	}
+	cout << sum+cash.getAmount() << " " << cash.getCurrency().type << endl;
+	return sum+cash.getAmount();
 }
 
 /*
@@ -348,6 +354,7 @@ void Bank::save_file()
     cin>>nn;
     ofstream file(nn);
     file << cash.getCurrency().type<<"\n";
+	file << cash.getAmount()<<"\n";
     file << pats.size()<<"\n";
     for(Patron x: pats)
     {
@@ -392,6 +399,13 @@ void Bank::menu()
 	bool stop = false;
 	while (!stop)
 	{
+		cout << "(1) Withdrawal" << endl;
+		cout << "(2) Deposit" << endl;
+		cout << "(3) New Patron" << endl;
+		cout << "(4) Display Transactions" << endl;
+		cout << "(5) Display Patrons" << endl;
+		cout << "(6) Total Money" << endl;
+		cout << "(7) Quit" << endl;
 		cout << "Enter an option: ";
 		int option;
 		cin >> option;
@@ -402,7 +416,8 @@ void Bank::menu()
 			case 3: newPatron(); break;
 			case 4: get_Transactions(); break;
 			case 5: get_Patrons(); break;
-			case 6: stop = true; break;
+			case 6: getTotalMoney(); break;
+			case 7: stop = true; break;
 			default: cout << "wut\n";
 		}
 	}
@@ -467,7 +482,7 @@ istream& operator>>(istream& is, Transaction& t)
 }
 
 //--------------------
-double get_rate(string s, string r)
+double BankIntl::get_rate(string s, string r)
 {
 	double num;
 	double den;
@@ -523,47 +538,269 @@ double get_rate(string s, string r)
 	
 	return num/den;
 }
-void Bankint1::withDrawl(){
-	cout<< "What Currency Would You Like to With Draw"<<endl;
-	string str;
-	cin >> str;
-	get_rate(str,cash.getCurrency().type);
-}
-
-void Bankint1::deposit(){
-	cout<< "What Currency Would You Like to With Draw"<<endl;
+void BankIntl::withdrawal(){
+	cout<< "What Currency Would You Like to withdrawal"<<endl;
 	string str;
 	cin >> str;
 	double val = get_rate(str,cash.getCurrency().type);
-}
-void BankIntl::save_file()
-{
+	//money in us
+	//ask for euro
+	//g_r(euro,us)
+	//returns euro/us
+	//euro/(euro/us)=us
+	//divide
+	int num;
+	bool valid;	
+	cout<<"Enter Id"<<endl;
+	cin>>num;
 	
+	// for loop checks trough vector of id's to see if id exists
+	Patron customer;
+	int index;
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			valid = true;
+			customer = pats[i];
+			index = i;
+			break;
+		}
+	}
+	if(valid){
+		int hou, min, sec, dd, mm, yy;
+		// getting data from user to create time object
+		cout<<"Enter Time"<<endl;
+		cout<<"Enter Hour"<<endl; 
+		cin>> hou; // stroes hour
+		cout<<"Enter Minute"<<endl;
+		cin>> min;// stores minute
+		cout<<"Enter Second"<<endl;
+		cin>> sec;// stores second
+		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		cout<<"Enter Date"<<endl;
+		cout<<"Enter Day"<<endl; 
+		cin>> dd; // stroes hour
+		cout<<"Enter Month"<<endl;
+		cin>> mm;// stores minute
+		cout<<"Enter Year"<<endl;
+		cin>> yy;// stores second
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+	     
+		cout<<"Enter Amount"<<endl;
+		double amountMon;
+		cin>> amountMon;
+		
+		if (pats.at(index).get_Money()>=amountMon)
+		{
+			Transaction transObj(customer ,dateObj,timeObj,"Withdrawal",amountMon/val);
+			trans.push_back(transObj);
+			
+			pats.at(index).set_Money(pats.at(index).get_Money()-amountMon/val);
+		}
+		else
+		{
+			cout << "Overdraw Error" << endl;
+		}
+	}
+	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
 
+/*
+	
+*/
+void BankIntl::deposit(){
+	cout<< "What Currency Would You Like to deposit"<<endl;
+	string str;
+	cin >> str;
+	double val = get_rate(str,cash.getCurrency().type);
+	//money in us
+	//ask for euro
+	//g_r(euro,us)
+	//returns euro/us
+	//euro/(euro/us)=us
+	//divide
+	int num;
+	bool valid;	
+	cout<<"Enter Id"<<endl;
+	cin>>num;
+	
+	// for loop checks trough vector of id's to see if id exists
+	Patron customer;
+	int index;
+	for(int i = 0; i < pats.size(); i++){
+		if(pats[i].get_idNum() == num){
+			valid = true;
+			customer = pats[i];
+			index = i;
+			break;
+		}
+	}
+	if(valid){
+		int hou, min, sec, dd, mm, yy;
+		// getting data from user to create time object
+		cout<<"Enter Time"<<endl;
+		cout<<"Enter Hour"<<endl; 
+		cin>> hou; // stroes hour
+		cout<<"Enter Minute"<<endl;
+		cin>> min;// stores minute
+		cout<<"Enter Second"<<endl;
+		cin>> sec;// stores second
+		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		cout<<"Enter Date"<<endl;
+		cout<<"Enter Day"<<endl; 
+		cin>> dd; // stroes hour
+		cout<<"Enter Month"<<endl;
+		cin>> mm;// stores minute
+		cout<<"Enter Year"<<endl;
+		cin>> yy;// stores second
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+	     
+		cout<<"Enter Amount"<<endl;
+		double amountMon;
+		cin>> amountMon;
+		
+		if (pats.at(index).get_Money()>=amountMon)
+		{
+			Transaction transObj(customer ,dateObj,timeObj,"Withdrawal",amountMon/val);
+			trans.push_back(transObj);
+			
+			pats.at(index).set_Money(pats.at(index).get_Money()-amountMon/val);
+		}
+		else
+		{
+			cout << "Overdraw Error" << endl;
+		}
+	}
+	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
+}
+
+/*
+	Asks the user for a currency to convert TO
+	Generates the multiplier with get_rate()
+	Multiplies all money values by this multiplier
+	sums them up and dipays the sum and the currency asked for
+*/
+double BankIntl::getTotalMoney()
+{
+	cout<< "What Currency Would You Like to display?"<<endl;
+	string str;
+	cin >> str;
+	double val = get_rate(str,cash.getCurrency().type);
+	double sum = 0;
+	for(Patron p : pats)
+	{
+		sum += p.get_Money()*val;
+	}
+	cout << sum+cash.getAmount()*val << " " << str << endl;
+	return sum+cash.getAmount()*val;
+}
+
+/*
+	See Bank::read();
+*/
 void BankIntl::read()
 {
-	
+	Bank::read();
 }
+
+/*
+	See Bank::save_file()
+*/
+void BankIntl::save_file()
+{
+	Bank::save_file();
+}
+
+/*
+	See Bank::newPatron();
+*/
+void BankIntl::newPatron()
+{
+	Bank::newPatron();
+}
+
+void BankIntl::add()
+{
+	cout<< "What Currency Would You Like to deposit"<<endl;
+	string str;
+	cin >> str;
+	double val = get_rate(str,cash.getCurrency().type);
+	cout << "How much?: ";
+	double mon;
+	cin >> mon;
+	cash.setAmount(cash.getAmount()+mon/val);
+}
+
+void BankIntl::remove()
+{
+	cout<< "What Currency Would You Like to withdrawal"<<endl;
+	string str;
+	cin >> str;
+	double val = get_rate(str,cash.getCurrency().type);
+	cout << "How much?: ";
+	double mon;
+	cin >> mon;
+	cash.setAmount(cash.getAmount()-mon/val);
+}
+
+/*
+	See Bank::menu()
+	new function to use the native Intl functions
+*/
 void BankIntl::menu()
 {
-	newPatron();
-	cout << "hi";
+	bool stop = false;
+	while (!stop)
+	{
+		cout << "(1) Withdrawal" << endl;
+		cout << "(2) Deposit" << endl;
+		cout << "(3) New Patron" << endl;
+		cout << "(4) Display Transactions" << endl;
+		cout << "(5) Display Patrons" << endl;
+		cout << "(6) Total Money" << endl;
+		cout << "(7) Add money to bank" << endl;
+		cout << "(8) Remove money form bank" << endl;
+		cout << "(9) Quit" << endl;
+		cout << "Enter an option: ";
+		int option;
+		cin >> option;
+		switch((int)option)
+		{
+			case 1: withdrawal(); break;
+			case 2: deposit(); break;
+			case 3: newPatron(); break;
+			case 4: get_Transactions(); break;
+			case 5: get_Patrons(); break;
+			case 6: getTotalMoney(); break;
+			case 7: add(); break;
+			case 8: remove(); break;
+			case 9: stop = true; break;
+			default: break;
+		}
+	}
+	cout << "Would you like to save? y/n: ";
+	char c;
+	cin >> c;
+	if (c=='Y' || c=='y')
+	{
+		save_file();
+	}
+}
+/*
+	See Bank::Bank();
+*/
+BankIntl::BankIntl()
+{
+	
 }
 
 //--------------------
 
 int main()
 {
-	cout << "hi";
 	Patron p("h",1,1);
 	Chrono::Date d;
 	Chrono::Time now;
 	Transaction tr(p,d,now,"Deposit",11);
-	cout << "hi";
-	Bank meme;
-	meme.read();
-	meme.menu();
-	//BankIntl intl;
-	//intl.menu();
+	BankIntl intl;
+	intl.menu();
 }

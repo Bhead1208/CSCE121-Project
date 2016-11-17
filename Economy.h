@@ -97,10 +97,15 @@ class BankIntl : public Bank
 	void withdrawal();
 	void save_file();
 	double get_rate(string,string);
+	double getTotalMoney();
+	void newPatron();
+	void add();
+	void remove();
 	
 	public:
 	void read();
 	void menu();
+	BankIntl();
 };
 
 ostream& operator<<(ostream&, Patron&);
