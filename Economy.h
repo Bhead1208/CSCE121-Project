@@ -36,6 +36,7 @@ class Patron{
 
 struct Transaction{
     
+	
     Transaction(Patron, Chrono::Date, Chrono::Time, string, double);
     
     Patron getcustomer();
@@ -70,6 +71,7 @@ class Money
 
 class Bank
 {
+	protected:
 	Vector<Patron> pats;
 	Vector<Transaction> trans;
 	Money cash;
@@ -86,6 +88,19 @@ class Bank
 	void read();
 	void menu();
 	Bank();
+};
+
+class BankIntl : public Bank
+{
+	protected:
+	void deposit();
+	void withdrawal();
+	void save_file();
+	double get_rate(string,string);
+	
+	public:
+	void read();
+	void menu();
 };
 
 ostream& operator<<(ostream&, Patron&);
