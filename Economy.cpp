@@ -776,7 +776,7 @@ void BankIntl::withdrawal(){
 }
 
 /*
-	
+	Function adds to bank in any currency
 */
 void BankIntl::deposit(){
 	cout<< "What Currency Would You Like to deposit"<<endl;
@@ -888,7 +888,11 @@ void BankIntl::newPatron()
 {
 	Bank::newPatron();
 }
-
+/*
+	Function adds to bank in any currency
+	
+	
+*/
 void BankIntl::add()
 {
 	cout<< "What Currency Would You Like to deposit"<<endl;
@@ -900,7 +904,11 @@ void BankIntl::add()
 	cin >> mon;
 	cash.setAmount(cash.getAmount()+mon/val);
 }
-
+/*
+	Function removes from bank 
+	
+	
+*/
 void BankIntl::remove()
 {
 	cout<< "What Currency Would You Like to withdrawal"<<endl;
