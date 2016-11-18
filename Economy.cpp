@@ -19,96 +19,188 @@ double Currency::getexchange_rate()
 }
 
 //--------------------
-
+/*
+	default constructor sets patronName money and idnum to values
+*/
 Patron::Patron(){
 	patronName = "John-Doe";
 	money = 0;
 	idNum = rand() % 1000000 + 1;
 }
+/*
+	Patron creates patron object 
+	@param1 string
+	@param2 string
+*/
 Patron::Patron(string first, string second){
 	patronName = first +"_"+ second;
 	money = 0;
 	idNum = rand() % 1000000 + 1;
 }
+/*
+	Patron constructor creates patron object sets money also
+	@param1 string
+	@param2 int
+	@param3 int
+*/
 Patron::Patron(string n, int d, int m)
 : patronName(n),money(m),idNum(d)
 {}
 string Patron::get_Name(){
 	return patronName;
 }
+/*
+	function sets name
+	@param1 string
+	
+*/
 void Patron::set_Name(string str){
 	patronName = str;
 }
+/*
+	function returns money
+	@param1 none
+	
+*/
 double Patron::get_Money(){
 	return money;
 }
+/*
+	function sets money
+	@param1 double
+	
+*/
 void Patron::set_Money(double mon){
 	money = mon;
 }
+/*
+	function gets idnum
+	@return int
+	
+*/
 int Patron::get_idNum(){
 	return idNum; 
 }
+/*
+	function sets idnum
+	@param1 int
+	
+*/
 void Patron::set_idNum(int num){
 	idNum = num;
 }
+/*
+	function changes id redoes the rand
+	@param1 string
+	
+*/
 void Patron::change_Id()
 {
 	idNum = rand() % 1000000 + 1;
 }
 
 //--------------------
-
+/*
+	Transactions constructor
+	sets patron date time string currency type and amount
+	@param1 Patron
+	@param2 Date 
+	@param3 Time
+	@param4 string
+	@param5 double
+	
+*/
 Transaction::Transaction(Patron cust, Chrono::Date d, Chrono::Time t, string type, double amount)
 :customer(cust),transaction_date(d),transaction_time(t),transaction_type(type),transaction_amount(amount)
 {}
-
+/*
+	function gets Patron object
+	@return1 Patron
+	
+*/
 Patron Transaction::getcustomer()
 {
     return customer;
 }
-
+/*
+	function gets date
+	@return Date
+	
+*/
 Chrono::Date Transaction::gettransaction_date()
 {
     return transaction_date;
 }
-
+/*
+	function gets time
+	@return Time
+	
+*/
 Chrono::Time Transaction::gettransaction_time()
 {
     return transaction_time;
 }
-
+/*
+	function gets Tansaction
+	@returns Transaction
+	
+*/
 string Transaction::gettransaction_type()
 {
     return transaction_type;
 }
-
+/*
+	function gets amount
+	@return double
+	
+*/
 double Transaction::gettransaction_amount()
 {
     return transaction_amount;
 }
 
 //--------------------
-
+/*
+	function gets currency
+	@return Currency
+	
+*/
 Currency Money::getCurrency()
 {
 	return cur;
 }
-
+/*
+	function sets currency type
+	@param1 string
+	
+*/
 void Money::setCurrency(string t)
 {
 	cur.type = "USD";
 }
-
+/*
+	function gets Amount
+	@returns double
+	
+*/
 double Money::getAmount()
 {
 	return amount;
 }
-
+/*
+	function sets Amount
+	@param double
+	
+*/
 void Money::setAmount(double a)
 {
 	amount = a;
 }
-
+/*
+	Money Default Constructor
+	sets amount currency typeand  Currency object 
+	
+*/
 Money::Money()
 {
 	amount = 6000;
@@ -118,14 +210,20 @@ Money::Money()
 }
 
 //--------------------
-
+/*
+	Bank Default Constructor
+	
+*/
 Bank::Bank() 
 {
 	cash.setAmount(6000.0);
 	cash.getCurrency().type = "USD";
 	read();
 };
-
+/*
+	
+	
+*/
 void Bank::read()
 {
 	pats.reserve(100);
@@ -210,7 +308,11 @@ void Bank::read()
 		cout << x << " " << cash.getCurrency().type << endl;
 	}
 }
-
+/*
+	function gets the total money of patron
+	@retrun double
+	
+*/
 double Bank::getTotalMoney()
 {
 	double sum = 0;
@@ -256,7 +358,7 @@ void Bank::deposit(){
 		cin>> min;// stores minute
 		cout<<"Enter Second"<<endl;
 		cin>> sec;// stores second
-		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		Chrono::Time timeObj(hou,min,sec);
 		cout<<"Enter Date"<<endl;
 		cout<<"Enter Day"<<endl; 
 		cin>> dd; // stroes hour
@@ -264,7 +366,7 @@ void Bank::deposit(){
 		cin>> mm;// stores minute
 		cout<<"Enter Year"<<endl;
 		cin>> yy;// stores second
-		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); 
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
@@ -276,7 +378,11 @@ void Bank::deposit(){
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
-
+/*
+	Function checks if id exists if it does then if it does lets patron deposit
+	
+	
+*/
 void Bank::withdrawal(){
 	int num;
 	bool valid;	
@@ -304,7 +410,7 @@ void Bank::withdrawal(){
 		cin>> min;// stores minute
 		cout<<"Enter Second"<<endl;
 		cin>> sec;// stores second
-		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
+		Chrono::Time timeObj(hou,min,sec);
 		cout<<"Enter Date"<<endl;
 		cout<<"Enter Day"<<endl; 
 		cin>> dd; // stroes hour
@@ -312,8 +418,8 @@ void Bank::withdrawal(){
 		cin>> mm;// stores minute
 		cout<<"Enter Year"<<endl;
 		cin>> yy;// stores second
-		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
-	     
+		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd);
+		
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
@@ -332,21 +438,32 @@ void Bank::withdrawal(){
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
-
+/*
+	Function gets things in trasactions object
+	couts transctions vector
+	
+*/
 void Bank::get_Transactions()
 {
     for (int i=0; i<trans.size();i++){
         cout << trans[i] << endl;
     }
 }
-
+/*
+	Function gets things in patrons object
+	couts patrons vector
+	
+*/
 void Bank::get_Patrons()
 {
     for (int i=0; i<pats.size();i++){
         cout << pats[i] << endl;
     }
 }
-
+/*
+	ofstream to read file onto file to save users info
+	
+*/
 void Bank::save_file()
 {
 	string nn;
@@ -366,7 +483,11 @@ void Bank::save_file()
         file<< x << "\n";
     }
 }
-
+/*
+	Function to add new patron if patron doesnt excist
+	pushes new patron into vector of Patron objects
+	
+*/
 void Bank::newPatron()
 {
 	string strFirst;
@@ -393,7 +514,10 @@ void Bank::newPatron()
 	
 	pats.push_back(newPat);
 }
-
+/*
+	Function displays menu 
+	
+*/
 void Bank::menu()
 {
 	bool stop = false;
@@ -431,17 +555,29 @@ void Bank::menu()
 }
 
 //--------------------
-
+/*
+	overloaded ostream operator
+	to cout Patron
+	
+*/
 ostream& operator<<(ostream& os, Patron& p)
 {
 	return os << p.get_Name() << " " << p.get_idNum() << " " << p.get_Money();
 }
-
+/*
+	overloaded ostream operator
+	to cout Transaction
+	
+*/
 ostream& operator<<(ostream& os, Transaction& t)
 {
 	return os << t.getcustomer().get_Name() << " " << t.gettransaction_date() << " " << t.gettransaction_time() << " " << t.gettransaction_type() << " " <<  t.gettransaction_amount();
 }
-
+/*
+	overloaded istream operator
+	to cin Patron
+	
+*/
 istream& operator>>(istream& is, Patron& p)
 {
     string name;
@@ -459,7 +595,11 @@ istream& operator>>(istream& is, Patron& p)
     return is;
    
 }
-
+/*
+	overloaded istream operator
+	to cin TTransaction
+	
+*/
 istream& operator>>(istream& is, Transaction& t)
 {
     string name;
@@ -482,6 +622,13 @@ istream& operator>>(istream& is, Transaction& t)
 }
 
 //--------------------
+/*
+	Function gets international bank rate based on parameter
+	@param1 string
+	@param2 string
+	@return double
+	
+*/
 double BankIntl::get_rate(string s, string r)
 {
 	double num;
@@ -538,6 +685,10 @@ double BankIntl::get_rate(string s, string r)
 	
 	return num/den;
 }
+/*
+	Functions Lets patron withdraw if their id exists
+	
+*/
 void BankIntl::withdrawal(){
 	cout<< "What Currency Would You Like to withdrawal"<<endl;
 	string str;
