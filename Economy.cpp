@@ -1,18 +1,38 @@
 #include "std_lib_facilities_4.h"
 #include "Economy.h"
-
+/*
+	Currency constructor 
+	@param1 string
+	@param2 double
+	setes type and rate based on parameter
+	
+*/
  Currency::Currency(string t,double r)
     :type(t),rate(r)
 {} 
-
+/*
+	Default Currency constructor 
+	@param1 string
+	@param2 double
+	sets type and rate to default
+	
+*/
 Currency::Currency()
 {}
-
+/*
+	Function returns currency
+	@return string
+	
+*/
 string Currency::getCurrency_type()
 {
     return type;
 }
-
+/*
+	Function returns exchange rate
+	@return double
+	
+*/
 double Currency::getexchange_rate()
 {
     return rate;
