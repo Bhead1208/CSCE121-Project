@@ -6,22 +6,3 @@ George_Melroe 125634 342
 Bob_Jones (11,11,11) (11:30:30:am) Deposit 11
 George_Melroe (11,11,11) (11:30:30:am) Deposit 300
 George_Melroe (11,11,11) (11:30:30:am) Withdrawal 42
-
-void Bank::save_file()
-{
-    string nn;
-    cout << "What file name";
-    cin>>nn;
-    ofstream file(nn);
-    file << cash.getCurrency().type<<endl;
-    file << pats.size()<<endl;
-    for(Patron x: pats)
-    {
-        cout<< x << endl;
-    }
-    file << trans.size()<<endl;
-    for(Transaction x: trans)
-    {
-        cout<< x << endl;
-    }
-}
