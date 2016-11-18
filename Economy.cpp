@@ -828,18 +828,9 @@ void BankIntl::deposit(){
 		cout<<"Enter Amount"<<endl;
 		double amountMon;
 		cin>> amountMon;
-		
-		if (pats.at(index).get_Money()>=amountMon)
-		{
-			Transaction transObj(customer ,dateObj,timeObj,"Withdrawal",amountMon/val);
-			trans.push_back(transObj);
-			
-			pats.at(index).set_Money(pats.at(index).get_Money()-amountMon/val);
-		}
-		else
-		{
-			cout << "Overdraw Error" << endl;
-		}
+		Transaction transObj(customer ,dateObj,timeObj,"Deposit",amountMon/val);
+		trans.push_back(transObj);
+		pats.at(index).set_Money(pats.at(index).get_Money()-amountMon/val);
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
