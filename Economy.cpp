@@ -830,7 +830,7 @@ void BankIntl::deposit(){
 		cin>> amountMon;
 		Transaction transObj(customer ,dateObj,timeObj,"Deposit",amountMon/val);
 		trans.push_back(transObj);
-		pats.at(index).set_Money(pats.at(index).get_Money()-amountMon/val);
+		pats.at(index).set_Money(pats.at(index).get_Money()+amountMon/val);
 	}
 	else cout<<" NO MATCHING ACCOUNT FOR THIS ID "<<endl;
 }
