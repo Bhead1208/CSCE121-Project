@@ -74,7 +74,7 @@ class Bank
 	protected:
 	Vector<Patron> pats;
 	Vector<Transaction> trans;
-	Money cash;
+	
 	double getTotalMoney();
 	void withdrawal();
 	void deposit();
@@ -86,15 +86,15 @@ class Bank
 	
 	public:
 	void read();
+	Money cash;
 	void menu();
 	Bank();
 };
 
 class BankIntl : public Bank
 {
-	protected:
-	void deposit();
-	void withdrawal();
+	public:
+	
 	void save_file();
 	double get_rate(string,string);
 	double getTotalMoney();
@@ -102,11 +102,17 @@ class BankIntl : public Bank
 	void add();
 	void remove();
 	
-	public:
+	
 	void read();
 	void menu();
+	void deposit();
+	void withdrawal(int id, string cur, double amount);
+	bool findPatron(int);
 	BankIntl();
 };
 
 ostream& operator<<(ostream&, Patron&);
 ostream& operator<<(ostream&, Transaction&);
+void PatronTransfer(BankIntl&,BankIntl&);
+void bigRead();
+void bigSave();

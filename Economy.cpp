@@ -319,10 +319,12 @@ void Bank::read()
 		cout << "no file" << endl;
 	}
 	cout << "Bank amount: "<< cash.getAmount() << " " << cash.getCurrency().type << endl;
+	cout << "Patrons: " << endl;
 	for (Patron x : pats)
 	{
 		cout << x << " " << cash.getCurrency().type << endl;
 	}
+	cout << "Transactions: " << endl;
 	for (Transaction x : trans)
 	{
 		cout << x << " " << cash.getCurrency().type << endl;
@@ -531,7 +533,6 @@ void Bank::newPatron()
 			break;
 		}
 	}
-	
 	pats.push_back(newPat);
 }
 /*
@@ -709,21 +710,21 @@ double BankIntl::get_rate(string s, string r)
 	Functions Lets patron withdraw if their id exists
 	
 */
-void BankIntl::withdrawal(){
+void BankIntl::withdrawal(int num, string cur, double amountMon){
 	cout<< "What Currency Would You Like to withdrawal"<<endl;
-	string str;
-	cin >> str;
-	double val = get_rate(str,cash.getCurrency().type);
+	//string str;
+	//cin >> str;
+	double val = get_rate(cur,cash.getCurrency().type);
 	//money in us
 	//ask for euro
 	//g_r(euro,us)
 	//returns euro/us
 	//euro/(euro/us)=us
 	//divide
-	int num;
+	//int num;
 	bool valid;	
-	cout<<"Enter Id"<<endl;
-	cin>>num;
+	//cout<<"Enter Id"<<endl;
+	//cin>>num;
 	
 	// for loop checks trough vector of id's to see if id exists
 	Patron customer;
@@ -756,9 +757,9 @@ void BankIntl::withdrawal(){
 		cin>> yy;// stores second
 		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
 	     
-		cout<<"Enter Amount"<<endl;
-		double amountMon;
-		cin>> amountMon;
+		//cout<<"Enter Amount"<<endl;
+		//double amountMon;
+		//cin>> amountMon;
 		
 		if (pats.at(index).get_Money()>=amountMon)
 		{
@@ -911,6 +912,17 @@ void BankIntl::remove()
 	cin >> mon;
 	cash.setAmount(cash.getAmount()-mon/val);
 }
+bool BankIntl::findPatron(int num)
+{
+	for (Patron x : pats)
+	{
+		if (x.get_idNum()==num)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 /*
 	See Bank::menu()
@@ -921,6 +933,7 @@ void BankIntl::menu()
 	bool stop = false;
 	while (!stop)
 	{
+		cout << "Available options:" << endl;
 		cout << "(1) Withdrawal" << endl;
 		cout << "(2) Deposit" << endl;
 		cout << "(3) New Patron" << endl;
@@ -928,14 +941,14 @@ void BankIntl::menu()
 		cout << "(5) Display Patrons" << endl;
 		cout << "(6) Total Money" << endl;
 		cout << "(7) Add money to bank" << endl;
-		cout << "(8) Remove money form bank" << endl;
+		cout << "(8) Remove money from bank" << endl;
 		cout << "(9) Quit" << endl;
 		cout << "Enter an option: ";
 		int option;
 		cin >> option;
 		switch((int)option)
 		{
-			case 1: withdrawal(); break;
+			case 1: withdrawal(100, "", 1.0); break;
 			case 2: deposit(); break;
 			case 3: newPatron(); break;
 			case 4: get_Transactions(); break;
@@ -963,9 +976,35 @@ BankIntl::BankIntl()
 	
 }
 
+//-------------------
+
+void PatronTransfer(BankIntl& from,BankIntl& to)
+{
+	//get id num
+	int idee = 100;
+	//check both 
+	if (from.findPatron(100) && to.findPatron(100))
+	{
+		//ask for money
+		//withdrawal from and deposit to (new functions)
+	}
+}
+
+void bigRead()
+{
+	//read the next line of the file
+	//find the file whose title matches the string
+	//read that file into that bank object (new read function)
+}
+
+void bigSave()
+{
+	//save all bank objects into a file, returning the name of the file (modify save)
+	//
+}
 //--------------------
 
-int main()
+/* int main()
 {
 	Patron p("h",1,1);
 	Chrono::Date d;
@@ -973,4 +1012,4 @@ int main()
 	Transaction tr(p,d,now,"Deposit",11);
 	BankIntl intl;
 	intl.menu();
-}
+} */
