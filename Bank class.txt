@@ -30,3 +30,7 @@ getTransactions():
 Loops through the transaction vector, displaying all of them.
 getPatrons():
 Loops through the patrons vector, displaying all of them.
+
+How to read/save the mega file:
+The file that will contain all of the bank objects' information will instead 
+contain the names of the files that actually contain the info.
