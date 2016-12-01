@@ -44,6 +44,14 @@ private:
   In_box input_d;
   In_box input_e;
   Out_box xy_out;                    // box for displaying last point entered
+  Out_box out1;
+  Out_box out2;
+  Out_box out3;
+  Out_box out4;
+  Out_box out5;
+  Out_box out6;
+  Out_box out7;
+  Out_box out8;
   Menu menu;                   // menu of color choices for the lines
   Button menu_button;                // button to display the color menu
 
@@ -65,8 +73,6 @@ private:
     menu_button.hide();    
     menu.show();
   }
-  
-  void draw_lines() const;
 
   void next();   // defined below
 
@@ -136,6 +142,14 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
 	 Point(50,0),               // location of box
 	 100, 20,                    // dimensions of box
 	 "Option:"),          // label of box
+	out1(Point(60,30), 100, 20, "Output 1"),
+	out2(Point(60,60), 100, 20, "Output 2"),
+	out3(Point(60,90), 100, 20, "Output 3"),
+	out4(Point(60,120), 100, 20, "Output 4"),
+	out5(Point(60,150), 100, 20, "Output 5"),
+	out6(Point(60,180), 100, 20, "Output 6"),
+	out7(Point(60,210), 100, 20, "Output 7"),
+	out8(Point(60,240), 100, 20, "Output 8"),
   // initialize the color menu
   menu(                        
 	     Point(x_max()-100,30),   // location of menu
@@ -168,6 +182,14 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   attach(input_b);
   attach(input_c);
   attach(xy_out);
+  attach(out1);
+  attach(out2);
+  attach(out3);
+  attach(out4);
+  attach(out5);
+  attach(out6);
+  attach(out7);
+  attach(out8);
   xy_out.put(myBank.cash.getCurrency().type);        // output to out box
 
   // First make 3 buttons for color menu, one for each color, and 
@@ -192,13 +214,6 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
 
   // attach shape that holds the lines to be displayed
   attach(lines);
-}
-
-void Lines_window::draw_lines() const;
-{
-	fl_font(FL_TIMES, 18);
-	string tempStr = "See the comand window to input the date and time.";
-	fl_draw(tempStr.c_str(),100,100);
 }
 
 // ---------------------------- 
@@ -250,7 +265,6 @@ void Lines_window::next() {
   }
   
   xy_out.put(choice);
-
   redraw();  // function inherited from Window to redraw the window
 }
 
