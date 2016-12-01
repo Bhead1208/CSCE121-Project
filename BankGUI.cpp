@@ -31,14 +31,18 @@ private:
   Open_polyline lines;               // shape to hold the lines themselves
   BankIntl myBank;
   string choice = "None";
+  int option = 0;
   
   // widgets:
   Button withdrawal_button;
+  Button deposit_button;
   Button next_button;                // button indicating next point is ready
   Button quit_button;                // end program
   In_box input_a;                     // box for entering x coord of next point
   In_box input_b;                     // box for entering y coord of next point
   In_box input_c;
+  In_box input_d;
+  In_box input_e;
   Out_box xy_out;                    // box for displaying last point entered
   Menu menu;                   // menu of color choices for the lines
   Button menu_button;                // button to display the color menu
@@ -55,45 +59,29 @@ private:
     menu_button.show(); 
   }
 
-  // actions invoked by callbacks:
-
-  void red_pressed() {
-    change(Color::red);
-    hide_menu();        // once a color is chosen from the menu, hide the menu
-  }
-
-  void blue_pressed() {
-    change(Color::blue);
-    hide_menu();
-  }
-
-  void black_pressed() {
-    change(Color::black);
-    hide_menu();
-  }
-
   void menu_pressed() {
     // when menu button is pressed, hide the menu button and show the 
     // actual menu of colors
     menu_button.hide();    
     menu.show();
   }
+  
+  void draw_lines() const;
 
   void next();   // defined below
 
   void quit();   // defined below
   
   void withdrawal();
+  void deposit();
 
   // callback functions; declared here and defined below.
-
-  static void cb_red(Address, Address);
-  static void cb_blue(Address, Address);
-  static void cb_black(Address, Address);
+  
   static void cb_menu(Address, Address);
   static void cb_next(Address, Address);
   static void cb_quit(Address, Address);
   static void cb_withdrawal(Address, Address);
+  static void cb_deposit(Address, Address);
 };
 
 // ----------------------------------------------------------
@@ -123,40 +111,54 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   input_a(
 	 Point(x_max()-410,0),       // location of box
 	 50, 20,                     // dimensions of box
-	 "next x:"),                 // label of box 
+	 "I1:"),                 // label of box 
   // initialize the input_b inbox
   input_b(
 	 Point(x_max()-310,0),       // location of box
 	 50, 20,                     // dimensions of box
-	 "next y:"),                 // label of box
+	 "I2:"),                 // label of box
   // initialize the outbox
   input_c(
 	 Point(x_max()-210,0),       // location of box
 	 50, 20,                     // dimensions of box
-	 "next z:"),                 // label of box
+	 "I3:"),                 // label of box
+  input_d(
+	 Point(x_max()-410,30),       // location of box
+	 50, 20,                     // dimensions of box
+	 "I2:"),                 // label of box
+  // initialize the outbox
+  input_e(
+	 Point(x_max()-310,30),       // location of box
+	 50, 20,                     // dimensions of box
+	 "I3:"),                 // label of box
   // initialize the outbox
   xy_out(
 	 Point(50,0),               // location of box
 	 100, 20,                    // dimensions of box
-	 choice),          // label of box
+	 "Option:"),          // label of box
   // initialize the color menu
   menu(                        
-	     Point(x_max()-70,30),   // location of menu
-	     70, 20,                 // dimensions of menu
+	     Point(x_max()-100,30),   // location of menu
+	     100, 20,                 // dimensions of menu
 	     Menu::vertical,         // list menu items vertically
-	     "color"),               // label of menu 
+	     "Menu"),               // label of menu 
   // initialize the menu button
   menu_button(
 	      Point(x_max()-80,30),  // location of menu button
 	      80, 20,                // dimensions of button 
-	      "color menu",          // label of button
+	      "Menu",          // label of button
 	      cb_menu),               // callback for button
 		
 	withdrawal_button(
 	      Point(x_max()-80,70),  // location of menu button
 	      80, 20,                // dimensions of button 
 	      "withdrawal",          // label of button
-	      cb_withdrawal)
+	      cb_withdrawal),
+	deposit_button(
+		  Point(x_max()-80,70),  // location of menu button
+	      80, 20,                // dimensions of button 
+	      "deposit",          // label of button
+	      cb_deposit)
   // body of constructor follows
 {
   // attach buttons and boxes to window
@@ -173,11 +175,15 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   // adjusts the size and location of the buttons; note callback functions).
   // Then attach menu to window but hide it (initially, the menu button
   // is displayed, not the actual menu of color choices).
-
-  menu.attach(new Button(Point(0,0),0,0,"red",cb_red)); 
-  menu.attach(new Button(Point(0,0),0,0,"blue",cb_blue));
-  menu.attach(new Button(Point(0,0),0,0,"black",cb_black));
-  menu.attach(new Button(Point(0,0),0,0,"withdrawal",cb_withdrawal));
+  
+  menu.attach(new Button(Point(0,0),0,0,"Withdrawal",cb_withdrawal));
+  menu.attach(new Button(Point(0,0),0,0,"Deposit",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"New Patron",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Transactions",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Patrons",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Total Money",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Add Money",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Remove Money",cb_deposit));
   attach(menu);
   menu.hide(); 
 
@@ -186,6 +192,13 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
 
   // attach shape that holds the lines to be displayed
   attach(lines);
+}
+
+void Lines_window::draw_lines() const;
+{
+	fl_font(FL_TIMES, 18);
+	string tempStr = "See the comand window to input the date and time.";
+	fl_draw(tempStr.c_str(),100,100);
 }
 
 // ---------------------------- 
@@ -223,41 +236,22 @@ void Lines_window::cb_next(Address, Address pw) {
 void Lines_window::next() {
   // get input data from the inboxes - x and y coordinates
   // of next point
-  int x = input_a.get_int();
-  int y = input_b.get_int();
-  int z = input_c.get_int();
+  string x = input_a.get_string();
+  string y = input_b.get_string();
+  string z = input_c.get_string();
 
-  // update current position readout - make a string with the
-  // coordinate info and use the out box
-  stringstream ss;
-  ss << '(' << x << ',' << y << ')';
+  switch(option)
+  {
+	  case 1: {
+		  
+		  myBank.withdrawal(stoi(x),y,stod(z));
+		  break;
+	  }
+  }
+  
   xy_out.put(choice);
 
   redraw();  // function inherited from Window to redraw the window
-}
-
-// -------------------------------
-// callback for when red button (part of color menu) is pressed - boilerplate
-
-void Lines_window::cb_red(Address, Address pw) {
-  reference_to<Lines_window>(pw).red_pressed();  
-  // red_pressed defined in Lines_window class as part of declaration
-}
-
-// -------------------------------
-// callback for when blue button (part of color menu) is pressed - boilerplate
-
-void Lines_window::cb_blue(Address, Address pw) {
-  reference_to<Lines_window>(pw).blue_pressed();  
-  // blue_pressed defined in Lines_window class as part of declaration
-}
-
-// -------------------------------
-// callback for when black button (part of color menu) is pressed - boilerplate
-
-void Lines_window::cb_black(Address, Address pw) {
-  reference_to<Lines_window>(pw).black_pressed();  
-  // black_pressed defined in Lines_window class as part of declaration
 }
 
 // -------------------------------
@@ -281,6 +275,25 @@ void Lines_window::cb_withdrawal(Address, Address pw) {
 void Lines_window::withdrawal() {
   choice = "withdrawal";
   xy_out.put(choice);
+  option = 1;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_deposit(Address, Address pw) {
+  reference_to<Lines_window>(pw).deposit();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::deposit() {
+  choice = "deposit";
+  xy_out.put(choice);
+  option = 2;
+  hide_menu();
   redraw();
 }
 

@@ -105,7 +105,7 @@ class BankIntl : public Bank
 	
 	void read();
 	void menu();
-	void deposit();
+	void deposit(int num, string cur, double amountMon);
 	void withdrawal(int id, string cur, double amount);
 	bool findPatron(int);
 	BankIntl();

@@ -711,7 +711,7 @@ double BankIntl::get_rate(string s, string r)
 	
 */
 void BankIntl::withdrawal(int num, string cur, double amountMon){
-	cout<< "What Currency Would You Like to withdrawal"<<endl;
+	//cout<< "What Currency Would You Like to withdrawal"<<endl;
 	//string str;
 	//cin >> str;
 	double val = get_rate(cur,cash.getCurrency().type);
@@ -738,24 +738,54 @@ void BankIntl::withdrawal(int num, string cur, double amountMon){
 		}
 	}
 	if(valid){
-		int hou, min, sec, dd, mm, yy;
 		// getting data from user to create time object
-		cout<<"Enter Time"<<endl;
+		/* cout<<"Enter Time"<<endl;
 		cout<<"Enter Hour"<<endl; 
 		cin>> hou; // stroes hour
 		cout<<"Enter Minute"<<endl;
 		cin>> min;// stores minute
 		cout<<"Enter Second"<<endl;
-		cin>> sec;// stores second
-		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
-		cout<<"Enter Date"<<endl;
+		cin>> sec;// stores second */
+		
+		auto ti = time(nullptr);
+		auto tim = *localtime(&ti);
+
+		ostringstream ossi;
+		ossi << put_time(&tim, "%H %M %S");
+		auto stri = ossi.str();
+
+		//cout << "Current Time is " << str << endl;
+
+		int hour; int minute; int second;
+		istringstream issi(stri);
+		issi >> hour >> minute >> second;
+		
+		Chrono::Time timeObj(hour,minute,second);//might have built object incorrectly come back and check
+		/* cout<<"Enter Date"<<endl;
 		cout<<"Enter Day"<<endl; 
 		cin>> dd; // stroes hour
 		cout<<"Enter Month"<<endl;
 		cin>> mm;// stores minute
 		cout<<"Enter Year"<<endl;
-		cin>> yy;// stores second
-		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+		cin>> yy;// stores second */
+		
+			auto t = time(nullptr);
+			auto tm = *localtime(&t);
+
+			ostringstream oss;
+			oss << put_time(&tm, "%d %m %Y");
+			auto str = oss.str();
+
+			//cout << "Current Date is " << str << endl;
+
+			int day; int month; int year;
+			istringstream iss(str);
+			iss >> day >> month >> year;
+			int y = year;
+			Chrono::Date::Month m = Chrono::Date::Month(month);
+			int d = day;
+		
+		Chrono::Date dateObj(y,m,d); // might have built object incorrectly come back and check
 	     
 		//cout<<"Enter Amount"<<endl;
 		//double amountMon;
@@ -779,21 +809,21 @@ void BankIntl::withdrawal(int num, string cur, double amountMon){
 /*
 	Function adds to bank in any currency
 */
-void BankIntl::deposit(){
-	cout<< "What Currency Would You Like to deposit"<<endl;
+void BankIntl::deposit(int num, string cur, double amountMon){
+	/* cout<< "What Currency Would You Like to deposit"<<endl;
 	string str;
-	cin >> str;
-	double val = get_rate(str,cash.getCurrency().type);
+	cin >> str; */
+	double val = get_rate(cur,cash.getCurrency().type);
 	//money in us
 	//ask for euro
 	//g_r(euro,us)
 	//returns euro/us
 	//euro/(euro/us)=us
 	//divide
-	int num;
+	//int num;
 	bool valid;	
-	cout<<"Enter Id"<<endl;
-	cin>>num;
+	// cout<<"Enter Id"<<endl;
+	// cin>>num;
 	
 	// for loop checks trough vector of id's to see if id exists
 	Patron customer;
@@ -809,26 +839,57 @@ void BankIntl::deposit(){
 	if(valid){
 		int hou, min, sec, dd, mm, yy;
 		// getting data from user to create time object
-		cout<<"Enter Time"<<endl;
+		/* cout<<"Enter Time"<<endl;
 		cout<<"Enter Hour"<<endl; 
 		cin>> hou; // stroes hour
 		cout<<"Enter Minute"<<endl;
 		cin>> min;// stores minute
 		cout<<"Enter Second"<<endl;
-		cin>> sec;// stores second
-		Chrono::Time timeObj(hou,min,sec);//might have built object incorrectly come back and check
-		cout<<"Enter Date"<<endl;
+		cin>> sec;// stores second */
+		
+		auto ti = time(nullptr);
+		auto tim = *localtime(&ti);
+
+		ostringstream ossi;
+		ossi << put_time(&tim, "%H %M %S");
+		auto stri = ossi.str();
+
+		//cout << "Current Time is " << str << endl;
+
+		int hour; int minute; int second;
+		istringstream issi(stri);
+		issi >> hour >> minute >> second;
+		
+		Chrono::Time timeObj(hour,minute,second);//might have built object incorrectly come back and check
+		/* cout<<"Enter Date"<<endl;
 		cout<<"Enter Day"<<endl; 
 		cin>> dd; // stroes hour
 		cout<<"Enter Month"<<endl;
 		cin>> mm;// stores minute
 		cout<<"Enter Year"<<endl;
-		cin>> yy;// stores second
-		Chrono::Date dateObj(yy,Chrono::Date::Month(mm),dd); // might have built object incorrectly come back and check
+		cin>> yy;// stores second */
+		
+			auto t = time(nullptr);
+			auto tm = *localtime(&t);
+
+			ostringstream oss;
+			oss << put_time(&tm, "%d %m %Y");
+			auto str = oss.str();
+
+			//cout << "Current Date is " << str << endl;
+
+			int day; int month; int year;
+			istringstream iss(str);
+			iss >> day >> month >> year;
+			int y = year;
+			Chrono::Date::Month m = Chrono::Date::Month(month);
+			int d = day;
+		
+		Chrono::Date dateObj(y,m,d); // might have built object incorrectly come back and check
 	     
-		cout<<"Enter Amount"<<endl;
-		double amountMon;
-		cin>> amountMon;
+		// cout<<"Enter Amount"<<endl;
+		// double amountMon;
+		// cin>> amountMon;
 		Transaction transObj(customer ,dateObj,timeObj,"Deposit",amountMon/val);
 		trans.push_back(transObj);
 		pats.at(index).set_Money(pats.at(index).get_Money()+amountMon/val);
@@ -949,7 +1010,7 @@ void BankIntl::menu()
 		switch((int)option)
 		{
 			case 1: withdrawal(100, "", 1.0); break;
-			case 2: deposit(); break;
+			case 2: deposit(100, "", 1.0); break;
 			case 3: newPatron(); break;
 			case 4: get_Transactions(); break;
 			case 5: get_Patrons(); break;
