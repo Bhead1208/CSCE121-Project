@@ -1,3 +1,4 @@
+
 #include "std_lib_facilities_4.h"
 #include "Economy.h"
 /*
@@ -510,16 +511,12 @@ void Bank::save_file()
 	pushes new patron into vector of Patron objects
 	
 */
-void Bank::newPatron()
+void Bank::newPatron(string strFirst, string strLast)
 {
-	string strFirst;
-	string strLast;
-	cout<< "Enter First Name"<<endl;
-	cin >> strFirst;
-	cout << "Enter Last Name"<<endl;
-	cin >> strLast;
 	
-	Patron newPat(strFirst,strLast);
+	string str = strFirst;
+	string str2 = strLast;
+	Patron newPat(str,str2);
 	
 	bool pass = true;
 	while(pass && (pats.size()!=0))
@@ -539,41 +536,41 @@ void Bank::newPatron()
 	Function displays menu 
 	
 */
-void Bank::menu()
-{
-	bool stop = false;
-	while (!stop)
-	{
-		cout << "(1) Withdrawal" << endl;
-		cout << "(2) Deposit" << endl;
-		cout << "(3) New Patron" << endl;
-		cout << "(4) Display Transactions" << endl;
-		cout << "(5) Display Patrons" << endl;
-		cout << "(6) Total Money" << endl;
-		cout << "(7) Quit" << endl;
-		cout << "Enter an option: ";
-		int option;
-		cin >> option;
-		switch(option)
-		{
-			case 1: withdrawal(); break;
-			case 2: deposit(); break;
-			case 3: newPatron(); break;
-			case 4: get_Transactions(); break;
-			case 5: get_Patrons(); break;
-			case 6: getTotalMoney(); break;
-			case 7: stop = true; break;
-			default: cout << "wut\n";
-		}
-	}
-	cout << "Would you like to save? y/n: ";
-	char c;
-	cin >> c;
-	if (c=='Y' || c=='y')
-	{
-		save_file();
-	}
-}
+// void Bank::menu()
+// {
+	// bool stop = false;
+	// while (!stop)
+	// {
+		// cout << "(1) Withdrawal" << endl;
+		// cout << "(2) Deposit" << endl;
+		// cout << "(3) New Patron" << endl;
+		// cout << "(4) Display Transactions" << endl;
+		// cout << "(5) Display Patrons" << endl;
+		// cout << "(6) Total Money" << endl;
+		// cout << "(7) Quit" << endl;
+		// cout << "Enter an option: ";
+		// int option;
+		// cin >> option;
+		// switch(option)
+		// {
+			// case 1: withdrawal(); break;
+			// case 2: deposit(); break;
+			// case 3: newPatron(); break;
+			// case 4: get_Transactions(); break;
+			// case 5: get_Patrons(); break;
+			// case 6: getTotalMoney(); break;
+			// case 7: stop = true; break;
+			// default: cout << "wut\n";
+		// }
+	// }
+	// cout << "Would you like to save? y/n: ";
+	// char c;
+	// cin >> c;
+	// if (c=='Y' || c=='y')
+	// {
+		// save_file();
+	// }
+// }
 
 //--------------------
 /*
@@ -937,24 +934,24 @@ void BankIntl::save_file()
 /*
 	See Bank::newPatron();
 */
-void BankIntl::newPatron()
+void BankIntl::newPatron(string str1, string str2)
 {
-	Bank::newPatron();
+	Bank::newPatron(str1,str2);
 }
 /*
 	Function adds to bank in any currency
 	
 	
 */
-void BankIntl::add()
+void BankIntl::add(string str, double mon)
 {
-	cout<< "What Currency Would You Like to deposit"<<endl;
-	string str;
-	cin >> str;
+	// cout<< "What Currency Would You Like to deposit"<<endl;
+	// string str;
+	// cin >> str;
 	double val = get_rate(str,cash.getCurrency().type);
-	cout << "How much?: ";
-	double mon;
-	cin >> mon;
+	// cout << "How much?: ";
+	// double mon;
+	// cin >> mon;
 	cash.setAmount(cash.getAmount()+mon/val);
 }
 /*
@@ -962,15 +959,9 @@ void BankIntl::add()
 	
 	
 */
-void BankIntl::remove()
+void BankIntl::remove(string str,double mon)
 {
-	cout<< "What Currency Would You Like to withdrawal"<<endl;
-	string str;
-	cin >> str;
 	double val = get_rate(str,cash.getCurrency().type);
-	cout << "How much?: ";
-	double mon;
-	cin >> mon;
 	cash.setAmount(cash.getAmount()-mon/val);
 }
 bool BankIntl::findPatron(int num)
@@ -989,46 +980,46 @@ bool BankIntl::findPatron(int num)
 	See Bank::menu()
 	new function to use the native Intl functions
 */
-void BankIntl::menu()
-{
-	bool stop = false;
-	while (!stop)
-	{
-		cout << "Available options:" << endl;
-		cout << "(1) Withdrawal" << endl;
-		cout << "(2) Deposit" << endl;
-		cout << "(3) New Patron" << endl;
-		cout << "(4) Display Transactions" << endl;
-		cout << "(5) Display Patrons" << endl;
-		cout << "(6) Total Money" << endl;
-		cout << "(7) Add money to bank" << endl;
-		cout << "(8) Remove money from bank" << endl;
-		cout << "(9) Quit" << endl;
-		cout << "Enter an option: ";
-		int option;
-		cin >> option;
-		switch((int)option)
-		{
-			case 1: withdrawal(100, "", 1.0); break;
-			case 2: deposit(100, "", 1.0); break;
-			case 3: newPatron(); break;
-			case 4: get_Transactions(); break;
-			case 5: get_Patrons(); break;
-			case 6: getTotalMoney(); break;
-			case 7: add(); break;
-			case 8: remove(); break;
-			case 9: stop = true; break;
-			default: break;
-		}
-	}
-	cout << "Would you like to save? y/n: ";
-	char c;
-	cin >> c;
-	if (c=='Y' || c=='y')
-	{
-		save_file();
-	}
-}
+// void BankIntl::menu()
+// {
+	// bool stop = false;
+	// while (!stop)
+	// {
+		// cout << "Available options:" << endl;
+		// cout << "(1) Withdrawal" << endl;
+		// cout << "(2) Deposit" << endl;
+		// cout << "(3) New Patron" << endl;
+		// cout << "(4) Display Transactions" << endl;
+		// cout << "(5) Display Patrons" << endl;
+		// cout << "(6) Total Money" << endl;
+		// cout << "(7) Add money to bank" << endl;
+		// cout << "(8) Remove money from bank" << endl;
+		// cout << "(9) Quit" << endl;
+		// cout << "Enter an option: ";
+		// int option;
+		// cin >> option;
+		// switch((int)option)
+		// {
+			// case 1: withdrawal(100, "", 1.0); break;
+			// case 2: deposit(100, "", 1.0); break;
+			// case 3: newPatron(); break;
+			// case 4: get_Transactions(); break;
+			// case 5: get_Patrons(); break;
+			// case 6: getTotalMoney(); break;
+			// case 7: add(string str, ); break;
+			// case 8: remove(); break;
+			// case 9: stop = true; break;
+			// default: break;
+		// }
+	// }
+	// cout << "Would you like to save? y/n: ";
+	// char c;
+	// cin >> c;
+	// if (c=='Y' || c=='y')
+	// {
+		// save_file();
+	// }
+// }
 /*
 	See Bank::Bank();
 */
@@ -1074,3 +1065,7 @@ void bigSave()
 	BankIntl intl;
 	intl.menu();
 } */
+
+
+
+
