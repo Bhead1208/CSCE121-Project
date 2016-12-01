@@ -78,7 +78,7 @@ class Bank
 	double getTotalMoney();
 	void withdrawal();
 	void deposit();
-	void newPatron();
+	void newPatron(string strFirst, string strLast);
 	void get_Transactions();
 	void get_Patrons();
 	void save_file();
@@ -98,9 +98,9 @@ class BankIntl : public Bank
 	void save_file();
 	double get_rate(string,string);
 	double getTotalMoney();
-	void newPatron();
-	void add();
-	void remove();
+	void newPatron(string, string);
+	void add(string str, double mon); // takes string for cureency type and double 
+	void remove(string str,double mon);
 	
 	
 	void read();
