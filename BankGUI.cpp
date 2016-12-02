@@ -298,9 +298,8 @@ void Lines_window::cb_next(Address, Address pw) {
 // -------------------------------
 // what to do when "next point" button is pressed
 
+// next when pressed executes
 void Lines_window::next() {
-  // get input data from the inboxes - x and y coordinates
-  // of next point
   string x = input_a.get_string();
   string y = input_b.get_string();
   string z = input_c.get_string();
@@ -470,7 +469,7 @@ void Lines_window::next() {
 }
 
 // -------------------------------
-// callback for when menu button is pressed - boilerplate
+// callbacks for when menu button is pressed 
 
 void Lines_window::cb_menu(Address, Address pw)
 {  
@@ -485,7 +484,7 @@ void Lines_window::cb_withdrawal(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::withdrawal() {
   choice = "withdrawal";
@@ -502,7 +501,7 @@ void Lines_window::cb_deposit(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::deposit() {
   choice = "deposit";
@@ -519,7 +518,7 @@ void Lines_window::cb_showPatron(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::showPatron() {
   choice = "Patrons";
@@ -536,7 +535,7 @@ void Lines_window::cb_showTransaction(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::showTransaction() {
   choice = "Tranactions";
@@ -553,7 +552,7 @@ void Lines_window::cb_isPatron(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::isPatron() {
   choice = "Find Patron";
@@ -570,7 +569,7 @@ void Lines_window::cb_add(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::add() {
   choice = "Add Money";
@@ -587,7 +586,7 @@ void Lines_window::cb_remove(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::remove() {
   choice = "Remove Money";
@@ -604,7 +603,7 @@ void Lines_window::cb_newPatron(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
+// Executes when button is pressed
 
 void Lines_window::newPatron() {
   choice = "New Patron 1";
@@ -621,8 +620,7 @@ void Lines_window::cb_newPatronID(Address, Address pw) {
 }
 
 //------------------------------------
-// what to do when quit button is pressed
-
+// Executes when button is pressed
 void Lines_window::newPatronID() {
   choice = "New Patron 2";
   xy_out.put(choice);
