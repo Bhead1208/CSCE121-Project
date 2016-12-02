@@ -36,7 +36,7 @@ private:
   // widgets:
   Button withdrawal_button;
   Button deposit_button;
-  Button next_button;                // button indicating next point is ready
+  Button next_button;                // performs option that was selected
   Button quit_button;                // end program
   In_box input_a;                     // box for entering x coord of next point
   In_box input_b;                     // box for entering y coord of next point
@@ -57,33 +57,31 @@ private:
   Out_box eurO;
   Out_box jpyO;
   Out_box rubO;
-  Vector<Out_box*> outbs;
-  Menu menu;                   // menu of color choices for the lines
+  Menu menu;                   // menu of options
   Button menu_button;                // button to display the color menu
 
   // function members
 
-  void change(Color c) {             // change the color of the lines
+ /* void change(Color c) {             // change the color of the lines
     lines.set_color(c);
-  }
+  }*/
 
   void hide_menu() {     
-    // hides the color menu and shows the button to display the color menu
+    // hides the color menu and shows the button to display menu of options
     menu.hide(); 
     menu_button.show(); 
   }
 
   void menu_pressed() {
     // when menu button is pressed, hide the menu button and show the 
-    // actual menu of colors
+    // actual menu of options
     menu_button.hide();    
     menu.show();
   }
-
-  void next();   // defined below
-
-  void quit();   // defined below
-  
+// defined below
+	
+  void next();   
+  void quit();   
   void withdrawal();
   void deposit();
   void showPatron();
