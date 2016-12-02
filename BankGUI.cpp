@@ -52,6 +52,12 @@ private:
   Out_box out6;
   Out_box out7;
   Out_box out8;
+  Out_box usO;
+  Out_box gbpO;
+  Out_box eurO;
+  Out_box jpyO;
+  Out_box rubO;
+  Vector<Out_box*> outbs;
   Menu menu;                   // menu of color choices for the lines
   Button menu_button;                // button to display the color menu
 
@@ -80,6 +86,13 @@ private:
   
   void withdrawal();
   void deposit();
+  void showPatron();
+  void showTransaction();
+  void isPatron();
+  void add();
+  void remove();
+  void newPatron();
+  void newPatronID();
 
   // callback functions; declared here and defined below.
   
@@ -88,6 +101,13 @@ private:
   static void cb_quit(Address, Address);
   static void cb_withdrawal(Address, Address);
   static void cb_deposit(Address, Address);
+  static void cb_showPatron(Address, Address);
+  static void cb_showTransaction(Address, Address);
+  static void cb_isPatron(Address, Address);
+  static void cb_add(Address, Address);
+  static void cb_remove(Address, Address);
+  static void cb_newPatron(Address, Address);
+  static void cb_newPatronID(Address, Address);
 };
 
 // ----------------------------------------------------------
@@ -105,7 +125,7 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   next_button(
 	      Point(x_max()-150,0),   // location of button
 	      70, 20,                 // dimensions of button
-	      "Next point",           // label of button
+	      "Next",          // label of button
 	      cb_next),               // callback function for button
   // initialize quit button
   quit_button(
@@ -142,14 +162,14 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
 	 Point(50,0),               // location of box
 	 100, 20,                    // dimensions of box
 	 "Option:"),          // label of box
-	out1(Point(60,30), 100, 20, "Output 1"),
-	out2(Point(60,60), 100, 20, "Output 2"),
-	out3(Point(60,90), 100, 20, "Output 3"),
-	out4(Point(60,120), 100, 20, "Output 4"),
-	out5(Point(60,150), 100, 20, "Output 5"),
-	out6(Point(60,180), 100, 20, "Output 6"),
-	out7(Point(60,210), 100, 20, "Output 7"),
-	out8(Point(60,240), 100, 20, "Output 8"),
+	out1(Point(60,30), 450, 20, "Output 1"),
+	out2(Point(60,60), 450, 20, "Output 2"),
+	out3(Point(60,90), 450, 20, "Output 3"),
+	out4(Point(60,120), 450, 20, "Output 4"),
+	out5(Point(60,150), 450, 20, "Output 5"),
+	out6(Point(60,180), 450, 20, "Output 6"),
+	out7(Point(60,210), 450, 20, "Output 7"),
+	out8(Point(60,240), 450, 20, "Output 8"),
   // initialize the color menu
   menu(                        
 	     Point(x_max()-100,30),   // location of menu
@@ -172,7 +192,12 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
 		  Point(x_max()-80,70),  // location of menu button
 	      80, 20,                // dimensions of button 
 	      "deposit",          // label of button
-	      cb_deposit)
+	      cb_deposit),
+	usO(Point(40,y_max()-20), 100, 20, "USD"),
+	gbpO(Point(180,y_max()-20), 100, 20, "GBP"),
+	eurO(Point(320,y_max()-20), 100, 20, "EUR"),
+	jpyO(Point(460,y_max()-20), 100, 20, "JPY"),
+	rubO(Point(600,y_max()-20), 100, 20, "RUB")
   // body of constructor follows
 {
   // attach buttons and boxes to window
@@ -190,7 +215,31 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   attach(out6);
   attach(out7);
   attach(out8);
-  xy_out.put(myBank.cash.getCurrency().type);        // output to out box
+  attach(usO);
+  attach(gbpO);
+  attach(rubO);
+  attach(eurO);
+  attach(jpyO);
+  xy_out.put("None");        // output to out box
+  
+  //format the doubles first
+  stringstream ss;
+  string me;
+  
+  sprintf((char*)me.c_str(), "%.2f", myBank.getTotalMoney("USD"));
+  usO.put(me);
+  
+  sprintf((char*)me.c_str(), "%.2f", myBank.getTotalMoney("GBP"));
+  gbpO.put(me);
+  
+  sprintf((char*)me.c_str(), "%.2f", myBank.getTotalMoney("EUR"));
+  eurO.put(me);
+  
+  sprintf((char*)me.c_str(), "%.2f", myBank.getTotalMoney("JPY"));
+  jpyO.put(me);
+  
+  sprintf((char*)me.c_str(), "%.2f", myBank.getTotalMoney("RUB"));
+  rubO.put(me);
 
   // First make 3 buttons for color menu, one for each color, and 
   // attach them to the menu: the attach function of the Menu struct
@@ -200,14 +249,16 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   
   menu.attach(new Button(Point(0,0),0,0,"Withdrawal",cb_withdrawal));
   menu.attach(new Button(Point(0,0),0,0,"Deposit",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"New Patron",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"Transactions",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"Patrons",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"Total Money",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"Add Money",cb_deposit));
-  menu.attach(new Button(Point(0,0),0,0,"Remove Money",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"New Patron 1",cb_newPatron));
+  menu.attach(new Button(Point(0,0),0,0,"New Patron 2",cb_newPatronID));
+  menu.attach(new Button(Point(0,0),0,0,"Transactions",cb_showTransaction));
+  menu.attach(new Button(Point(0,0),0,0,"Patrons",cb_showPatron));
+  //menu.attach(new Button(Point(0,0),0,0,"Total Money",cb_deposit));
+  menu.attach(new Button(Point(0,0),0,0,"Add Money",cb_add));
+  menu.attach(new Button(Point(0,0),0,0,"Remove Money",cb_remove));
+  menu.attach(new Button(Point(0,0),0,0,"Find Patron",cb_isPatron));
   attach(menu);
-  menu.hide(); 
+  menu.hide();
 
   // attach menu button
   attach(menu_button);
@@ -236,6 +287,7 @@ void Lines_window::cb_quit(Address, Address pw) {
 
 void Lines_window::quit() {
   hide();                   // FLTK idiom for delete window
+  myBank.save_file();
 }
 
 // ----------------------------
@@ -260,11 +312,162 @@ void Lines_window::next() {
 	  case 1: {
 		  
 		  myBank.withdrawal(stoi(x),y,stod(z));
-		  break;
-	  }
+	  } break;
+	  case 2: {
+		  myBank.deposit(stoi(x),y,stod(z));
+	  } break;
+	  case 3: {
+		  Vector<Patron> pats = myBank.getPats();
+		  stringstream sst;
+		  if (pats.size()>0)
+		  {
+			  sst << pats.at(0);
+			  
+			  out1.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>1)
+		  {
+			  sst << pats.at(1);
+			  
+			  out2.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>2)
+		  {
+			  sst << pats.at(2);
+			  
+			  out3.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>3)
+		  {
+			  sst << pats.at(3);
+			  
+			  out4.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>4)
+		  {
+			  sst << pats.at(4);
+			  
+			  out5.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>5)
+		  {
+			  sst << pats.at(5);
+			  
+			  out6.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>6)
+		  {
+			  sst << pats.at(6);
+			  
+			  out7.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>7)
+		  {
+			  sst << pats.at(7);
+			  
+			  out8.put(sst.str());
+			  sst.str("");
+		  }
+	  } break;
+	  case 4: {
+		  Vector<Transaction> pats = myBank.getTrans();
+		  stringstream sst;
+		  if (pats.size()>0)
+		  {
+			  sst << pats.at(0);
+			  
+			  out1.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>1)
+		  {
+			  sst << pats.at(1);
+			  
+			  out2.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>2)
+		  {
+			  sst << pats.at(2);
+			  
+			  out3.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>3)
+		  {
+			  sst << pats.at(3);
+			  
+			  out4.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>4)
+		  {
+			  sst << pats.at(4);
+			  
+			  out5.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>5)
+		  {
+			  sst << pats.at(5);
+			  
+			  out6.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>6)
+		  {
+			  sst << pats.at(6);
+			  
+			  out7.put(sst.str());
+			  sst.str("");
+		  }
+		  if (pats.size()>7)
+		  {
+			  sst << pats.at(7);
+			  
+			  out8.put(sst.str());
+			  sst.str("");
+		  }
+	  } break;
+	  case 5:
+	  {
+		  if (myBank.findPatron(stoi(x)))
+		  {
+			  out1.put("Patron found!");
+		  }
+		  else
+		  {
+			  out1.put("Patron not found!");
+		  }
+	  }break;
+	  case 6:
+	  {
+		  myBank.add(x,stod(y));
+	  }break;
+	  case 7:
+	  {
+		  myBank.remove(x,stod(y));
+	  }break;
+	  case 8:
+	  {
+		  myBank.newPatron(x,y);
+	  }break;
+	  case 9:
+	  {
+		  myBank.newPatron(x,y,stoi(z));
+	  }break;
   }
   
+  choice = "None";
   xy_out.put(choice);
+  option = 0;
   redraw();  // function inherited from Window to redraw the window
 }
 
@@ -313,12 +516,134 @@ void Lines_window::deposit() {
 
 // ----------------------------
 
+void Lines_window::cb_showPatron(Address, Address pw) {
+  reference_to<Lines_window>(pw).showPatron();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::showPatron() {
+  choice = "Patrons";
+  xy_out.put(choice);
+  option = 3;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_showTransaction(Address, Address pw) {
+  reference_to<Lines_window>(pw).showTransaction();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::showTransaction() {
+  choice = "Tranactions";
+  xy_out.put(choice);
+  option = 4;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_isPatron(Address, Address pw) {
+  reference_to<Lines_window>(pw).isPatron();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::isPatron() {
+  choice = "Find Patron";
+  xy_out.put(choice);
+  option = 5;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_add(Address, Address pw) {
+  reference_to<Lines_window>(pw).add();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::add() {
+  choice = "Add Money";
+  xy_out.put(choice);
+  option = 6;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_remove(Address, Address pw) {
+  reference_to<Lines_window>(pw).remove();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::remove() {
+  choice = "Remove Money";
+  xy_out.put(choice);
+  option = 7;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_newPatron(Address, Address pw) {
+  reference_to<Lines_window>(pw).newPatron();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::newPatron() {
+  choice = "New Patron 1";
+  xy_out.put(choice);
+  option = 8;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
+
+void Lines_window::cb_newPatronID(Address, Address pw) {
+  reference_to<Lines_window>(pw).newPatronID();   // quit is defined next
+}
+
+//------------------------------------
+// what to do when quit button is pressed
+
+void Lines_window::newPatronID() {
+  choice = "New Patron 2";
+  xy_out.put(choice);
+  option = 9;
+  hide_menu();
+  redraw();
+}
+
+// ----------------------------
 // main - just creates window and invokes gui_main
 
 int main() 
   try {
-    // construct the GUI window
-    Lines_window win(Point(100,100),600,400,"lines");
+    // construct the GUI windows
+    Lines_window win1(Point(100,100),800,600,"lines1");
+	// Lines_window win2(Point(200,200),800,600,"lines2");
+	// Lines_window win3(Point(300,300),800,600,"lines3");
+	// Lines_window win4(Point(400,400),800,600,"lines4");
+	// Lines_window win5(Point(500,500),800,600,"lines5");
     return gui_main();  // inherited from Window; calls FLTK's run
   }
   catch(exception& e) {

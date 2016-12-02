@@ -97,7 +97,7 @@ class BankIntl : public Bank
 	
 	void save_file();
 	double get_rate(string,string);
-	double getTotalMoney();
+	double getTotalMoney(string str);
 	void newPatron(string, string);
 	void add(string str, double mon); // takes string for cureency type and double 
 	void remove(string str,double mon);
@@ -108,7 +108,10 @@ class BankIntl : public Bank
 	void deposit(int num, string cur, double amountMon);
 	void withdrawal(int id, string cur, double amount);
 	bool findPatron(int);
+	Vector<Patron> getPats() {return pats;}
+	Vector<Transaction> getTrans() {return trans;}
 	BankIntl();
+	void newPatron(string str1, string str2, int newID);
 };
 
 ostream& operator<<(ostream&, Patron&);

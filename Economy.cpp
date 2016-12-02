@@ -1,4 +1,3 @@
-
 #include "std_lib_facilities_4.h"
 #include "Economy.h"
 /*
@@ -900,11 +899,11 @@ void BankIntl::deposit(int num, string cur, double amountMon){
 	Multiplies all money values by this multiplier
 	sums them up and dipays the sum and the currency asked for
 */
-double BankIntl::getTotalMoney()
+double BankIntl::getTotalMoney(string str)
 {
-	cout<< "What Currency Would You Like to display?"<<endl;
+	/* cout<< "What Currency Would You Like to display?"<<endl;
 	string str;
-	cin >> str;
+	cin >> str; */
 	double val = get_rate(str,cash.getCurrency().type);
 	double sum = 0;
 	for(Patron p : pats)
@@ -937,6 +936,13 @@ void BankIntl::save_file()
 void BankIntl::newPatron(string str1, string str2)
 {
 	Bank::newPatron(str1,str2);
+}
+
+void BankIntl::newPatron(string str1, string str2, int newID)
+{
+	string str = str1+str2;
+	Patron newPat(str,newID,0);
+	pats.push_back(newPat);
 }
 /*
 	Function adds to bank in any currency
@@ -1065,7 +1071,3 @@ void bigSave()
 	BankIntl intl;
 	intl.menu();
 } */
-
-
-
-
