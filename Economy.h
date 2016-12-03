@@ -1,3 +1,8 @@
+/*
+Aadhav Chandran
+Brian Head
+Abraham Hinojosa
+*/
 #include "Chrono.h"
 #include "std_lib_facilities_4.h"
 
