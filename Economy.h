@@ -1,8 +1,3 @@
-/*
-Aadhav Chandran
-Brian Head
-Abraham Hinojosa
-*/
 #include "Chrono.h"
 #include "std_lib_facilities_4.h"
 
@@ -14,6 +9,7 @@ public:
     string getCurrency_type();
     
     double getexchange_rate();
+	void setType(string);
 	
     string type;
     double rate;
