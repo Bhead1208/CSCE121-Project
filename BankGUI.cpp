@@ -1,9 +1,13 @@
+/*
+Aadhav Chandran
+Brian Head
+Abraham Hinojosa
+*/
 // Example code from Chapter 16.5 from textbook (chapter.16.7.cpp)
 // with additional annotations.
 // This code constructs a GUI that interacts with the user through
 // buttons, boxes, and menus to draw an open polyline defined by
 // points given by the user.
-
 #include <iostream>    // for i/o
 #include <sstream>     // for string streams
 #include "Graph.h"     // next 3 are for graphics library
