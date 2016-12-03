@@ -247,7 +247,7 @@ Bank::Bank()
 	read();
 };
 /*
-	
+	read funtion Reads files depending on what they are
 	
 */
 void Bank::read()
@@ -539,45 +539,6 @@ void Bank::newPatron(string strFirst, string strLast)
 	}
 	pats.push_back(newPat);
 }
-/*
-	Function displays menu 
-	
-*/
-// void Bank::menu()
-// {
-	// bool stop = false;
-	// while (!stop)
-	// {
-		// cout << "(1) Withdrawal" << endl;
-		// cout << "(2) Deposit" << endl;
-		// cout << "(3) New Patron" << endl;
-		// cout << "(4) Display Transactions" << endl;
-		// cout << "(5) Display Patrons" << endl;
-		// cout << "(6) Total Money" << endl;
-		// cout << "(7) Quit" << endl;
-		// cout << "Enter an option: ";
-		// int option;
-		// cin >> option;
-		// switch(option)
-		// {
-			// case 1: withdrawal(); break;
-			// case 2: deposit(); break;
-			// case 3: newPatron(); break;
-			// case 4: get_Transactions(); break;
-			// case 5: get_Patrons(); break;
-			// case 6: getTotalMoney(); break;
-			// case 7: stop = true; break;
-			// default: cout << "wut\n";
-		// }
-	// }
-	// cout << "Would you like to save? y/n: ";
-	// char c;
-	// cin >> c;
-	// if (c=='Y' || c=='y')
-	// {
-		// save_file();
-	// }
-// }
 
 //--------------------
 /*
@@ -742,14 +703,6 @@ void BankIntl::withdrawal(int num, string cur, double amountMon){
 		}
 	}
 	if(valid){
-		// getting data from user to create time object
-		/* cout<<"Enter Time"<<endl;
-		cout<<"Enter Hour"<<endl; 
-		cin>> hou; // stroes hour
-		cout<<"Enter Minute"<<endl;
-		cin>> min;// stores minute
-		cout<<"Enter Second"<<endl;
-		cin>> sec;// stores second */
 		
 		auto ti = time(nullptr);
 		auto tim = *localtime(&ti);
@@ -765,13 +718,7 @@ void BankIntl::withdrawal(int num, string cur, double amountMon){
 		issi >> hour >> minute >> second;
 		
 		Chrono::Time timeObj(hour,minute,second);//might have built object incorrectly come back and check
-		/* cout<<"Enter Date"<<endl;
-		cout<<"Enter Day"<<endl; 
-		cin>> dd; // stroes hour
-		cout<<"Enter Month"<<endl;
-		cin>> mm;// stores minute
-		cout<<"Enter Year"<<endl;
-		cin>> yy;// stores second */
+		
 		
 			auto t = time(nullptr);
 			auto tm = *localtime(&t);
@@ -789,11 +736,7 @@ void BankIntl::withdrawal(int num, string cur, double amountMon){
 			Chrono::Date::Month m = Chrono::Date::Month(month);
 			int d = day;
 		
-		Chrono::Date dateObj(y,m,d); // might have built object incorrectly come back and check
-	     
-		//cout<<"Enter Amount"<<endl;
-		//double amountMon;
-		//cin>> amountMon;
+		Chrono::Date dateObj(y,m,d); 
 		
 		if (pats.at(index).get_Money()>=amountMon)
 		{
@@ -940,12 +883,19 @@ void BankIntl::save_file()
 
 /*
 	See Bank::newPatron();
+	@param1 string
+	@param2 string
 */
 void BankIntl::newPatron(string str1, string str2)
 {
 	Bank::newPatron(str1,str2);
 }
-
+/*
+	See Bank::newPatron();
+	@param1 string
+	@param2 string
+	@param3 int
+*/
 void BankIntl::newPatron(string str1, string str2, int newID)
 {
 	string str = str1+str2;
@@ -954,8 +904,8 @@ void BankIntl::newPatron(string str1, string str2, int newID)
 }
 /*
 	Function adds to bank in any currency
-	
-	
+	@param1 string
+	@param2 double
 */
 void BankIntl::add(string str, double mon)
 {
@@ -970,7 +920,8 @@ void BankIntl::add(string str, double mon)
 }
 /*
 	Function removes from bank 
-	
+	@param1 string
+	@param2 double
 	
 */
 void BankIntl::remove(string str,double mon)
@@ -990,50 +941,6 @@ bool BankIntl::findPatron(int num)
 	return false;
 }
 
-/*
-	See Bank::menu()
-	new function to use the native Intl functions
-*/
-// void BankIntl::menu()
-// {
-	// bool stop = false;
-	// while (!stop)
-	// {
-		// cout << "Available options:" << endl;
-		// cout << "(1) Withdrawal" << endl;
-		// cout << "(2) Deposit" << endl;
-		// cout << "(3) New Patron" << endl;
-		// cout << "(4) Display Transactions" << endl;
-		// cout << "(5) Display Patrons" << endl;
-		// cout << "(6) Total Money" << endl;
-		// cout << "(7) Add money to bank" << endl;
-		// cout << "(8) Remove money from bank" << endl;
-		// cout << "(9) Quit" << endl;
-		// cout << "Enter an option: ";
-		// int option;
-		// cin >> option;
-		// switch((int)option)
-		// {
-			// case 1: withdrawal(100, "", 1.0); break;
-			// case 2: deposit(100, "", 1.0); break;
-			// case 3: newPatron(); break;
-			// case 4: get_Transactions(); break;
-			// case 5: get_Patrons(); break;
-			// case 6: getTotalMoney(); break;
-			// case 7: add(string str, ); break;
-			// case 8: remove(); break;
-			// case 9: stop = true; break;
-			// default: break;
-		// }
-	// }
-	// cout << "Would you like to save? y/n: ";
-	// char c;
-	// cin >> c;
-	// if (c=='Y' || c=='y')
-	// {
-		// save_file();
-	// }
-// }
 /*
 	See Bank::Bank();
 */
