@@ -281,16 +281,9 @@ Lines_window::Lines_window(Point xy, int w, int h, const string& title) :
   attach(lines);
 }
 
-// ---------------------------- 
-// callback function for quit button - boilerplate: 
+// ----------------------------  
 // When the button is pressed, the system invokes the
-// specified callback function.  First argument is address of the
-// button (which we won't use, so we don't bother to name it).  Second
-// argument, named pw, is address of the window containing the pressed
-// button, i.e., address of our Lines_window object.  reference_to
-// converts the address pw into a reference to a Lines_window object,
-// so we can call the quit() function.  Objective is to call function
-// quit() which does the real work specific to this button.
+// specified callback function.
 
 void Lines_window::cb_quit(Address, Address pw) {
   reference_to<Lines_window>(pw).quit();   // quit is defined next
